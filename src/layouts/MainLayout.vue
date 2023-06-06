@@ -23,22 +23,6 @@
       content-class="bg-grey-2"
     >
       <q-scroll-area class="fit q-qa-sm">
-        <!-- <div class="row justify-center q-my-lg">
-          <p class="text-h2 text-weight-bolder">
-            LOGO
-          </p>
-        </div>
-        <div class="row q-pl-md q-my-lg">
-          <p class="text-h5 text-weight-mdeium text-amber-10">
-            Services
-          </p>
-        </div>
-        <div class="row q-pl-md q-my-lg">
-          <p class="text-weight-mdeium" style="font-size:18px;">
-            <q-icon name="logout" color="amber-10"/>
-            <span class="q-ml-lg">Logout</span>
-          </p>
-        </div> -->
         <q-list>
           <q-item-label
             class="q-my-lg"
