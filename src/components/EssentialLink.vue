@@ -2,19 +2,28 @@
   <q-item
     clickable
     tag="a"
-    target="_blank"
     :href="link"
   >
     <q-item-section
       v-if="icon"
       avatar
     >
-      <q-icon :name="icon" />
+      <q-icon :name="icon" color="amber-10" />
     </q-item-section>
 
-    <q-item-section>
+    <q-item-section
+      v-if="icon"
+    >
       <q-item-label>{{ title }}</q-item-label>
       <q-item-label caption>{{ caption }}</q-item-label>
+    </q-item-section>
+    <q-item-section
+      v-else
+      class="q-my-lg"
+    >
+      <q-item-label class="text-h5 text-weight-medium text-amber-10">
+        {{ title }}
+      </q-item-label>
     </q-item-section>
   </q-item>
 </template>
