@@ -1,7 +1,7 @@
 <template>
 
   <q-page
-    class="row justify-center items-center"
+    class="row justify-center items-center" :style-fn="myTweak"
   >
       <div class="col-10 col-md-8 col-lg-6">
         <div class="row">
@@ -48,6 +48,17 @@ export default defineComponent({
       url: '',
       username: '',
       password: ''
+    }
+  },
+  methods: {
+    myTweak (offset) {
+      var width = window.innerWidth
+      if (width > 1024) {
+        return { minHeight: offset? `calc(100vh - ${offset}px)` : `100vh` }
+      } else {
+        return { minHeight: `0px` }
+      }
+
     }
   }
 })
