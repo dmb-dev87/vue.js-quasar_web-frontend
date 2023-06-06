@@ -8,18 +8,19 @@
       v-if="icon"
       avatar
     >
-      <q-icon :name="icon" color="amber-10" />
+      <q-icon :name="icon" color="amber-10" size="md" />
     </q-item-section>
 
     <q-item-section
       v-if="icon"
+      class="q-my-md"
     >
-      <q-item-label>{{ title }}</q-item-label>
+      <q-item-label class="text-h5 text-weight-medium">{{ title }}</q-item-label>
       <q-item-label caption>{{ caption }}</q-item-label>
     </q-item-section>
     <q-item-section
       v-else
-      class="q-my-lg"
+      class="q-my-md"
     >
       <q-item-label class="text-h5 text-weight-medium text-amber-10">
         {{ title }}
