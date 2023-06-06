@@ -75,8 +75,9 @@ const linksList = [
     link: '#/services'
   },
   {
-    title: 'Logout',
-    icon: 'logout',
+    title: 'Login',
+    icon: 'login',
+    link: '#/login'
   },
 ];
 
