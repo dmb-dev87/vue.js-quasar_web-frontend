@@ -28,7 +28,7 @@
               </q-card-section>
               <q-card-actions class="q-py-xl q-my-lg justify-center">
                 <div class="col-4">
-                  <q-btn unelevated size="lg" color="amber-10" class="text-white full-width" label="LOGIN" />
+                  <q-btn unelevated size="lg" color="amber-10" class="text-white full-width" label="LOGIN" @click="updateState" />
                 </div>
               </q-card-actions>
             </q-card>
@@ -41,6 +41,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { useStore } from 'src/store'
+
 export default defineComponent({
   name: 'Login',
   data () {
@@ -50,8 +52,13 @@ export default defineComponent({
       password: ''
     }
   },
+  setup() {
+    const store = useStore()
+
+    return { store }
+  },
   methods: {
-    myTweak (offset) {
+    myTweak (offset: number) {
       var width = window.innerWidth
       if (width > 1024) {
         return { minHeight: offset? `calc(100vh - ${offset}px)` : `100vh` }
@@ -59,6 +66,11 @@ export default defineComponent({
         return { minHeight: `0px` }
       }
 
+    },
+    updateState () {
+      console.log("+++++++++++++++++", this.store)
+      this.store.commit('setUrl', this.url)
+      this.store.commit('setUsername', this.username)
     }
   }
 })

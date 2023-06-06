@@ -55,8 +55,24 @@ import EssentialLink from 'components/EssentialLink.vue';
 
 const linksList = [
   {
-    title: 'Services',
-    link: '#/services'
+    title: 'Services 1',
+    link: '#/services1'
+  },
+  {
+    title: 'Services 2',
+    link: '#/services2'
+  },
+  {
+    title: 'Services 3',
+    link: '#/services3'
+  },
+  {
+    title: 'Services 4',
+    link: '#/services4'
+  },
+  {
+    title: 'Services 5',
+    link: '#/services5'
   },
   {
     title: 'Login',

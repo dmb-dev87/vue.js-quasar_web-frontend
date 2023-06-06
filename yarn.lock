@@ -2279,6 +2279,11 @@ vite@^2.9.13:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vue-demi@^0.13.11:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
+  integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
+
 vue-i18n@^9.2.2:
   version "9.2.2"
   resolved "https://registry.npmjs.org/vue-i18n/-/vue-i18n-9.2.2.tgz"
@@ -2306,6 +2311,13 @@ vue@^3.0.0:
     "@vue/runtime-dom" "3.3.4"
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
+
+vuex-smart-module@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/vuex-smart-module/-/vuex-smart-module-0.6.2.tgz#1a5a7d17f6aa256ec1af84de9f14cb479bf2b26e"
+  integrity sha512-w8Fli1+p9khaIqVRLIAyAH/pTr3m9Ehh6jgR3xNPyapMToxEBmWCnZaZLg5ePATT2DSiqcPeqHH3Hu6AIS1hBg==
+  dependencies:
+    vue-demi "^0.13.11"
 
 vuex@^4.0.1:
   version "4.1.0"

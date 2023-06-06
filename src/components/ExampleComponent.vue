@@ -1,14 +1,8 @@
 <template>
   <div>
     <p>{{ title }}</p>
-    <ul>
-      <li v-for="todo in todos" :key="todo.id" @click="increment">
-        {{ todo.id }} - {{ todo.content }}
-      </li>
-    </ul>
-    <p>Count: {{ todoCount }} / {{ meta.totalCount }}</p>
-    <p>Active: {{ active ? 'yes' : 'no' }}</p>
-    <p>Clicks on todos: {{ clickCount }}</p>
+    <p>URL: {{ store.getters.url }}</p>
+    <p>name: {{ store.getters.username }}</p>
   </div>
 </template>
 
@@ -22,6 +16,7 @@ import {
   Ref,
 } from 'vue';
 import { Todo, Meta } from './models';
+import { useStore, loginModule } from 'src/store';
 
 function useClickCount() {
   const clickCount = ref(0);
@@ -58,7 +53,9 @@ export default defineComponent({
     }
   },
   setup (props) {
-    return { ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) };
+    const store = useStore()
+    // return { store }
+    return { store, ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) };
   },
 });
 </script>
