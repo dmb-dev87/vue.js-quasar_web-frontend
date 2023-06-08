@@ -65,22 +65,25 @@
 
 <script lang="ts">
 import ServiceComponent from 'components/ServiceComponent.vue';
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
 import { useStore } from 'src/store';
 import axios from 'axios';
 import { ref } from 'vue'
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'ServiceOne',
   components: { ServiceComponent },
   setup (props) {
+    const $q = useQuasar()
+
     const store = useStore()
 
     const url = store.getters.url
     const username = store.getters.username
     const token = store.getters.token
     const services = ref([])
-    const loaded = ref(false)
+    const loaded = ref(true)
 
     const api = axios.create({
       baseURL: `https://${url}.demoserver.pro`,
@@ -89,14 +92,18 @@ export default defineComponent({
       }
     })
 
-    api.get(
-      `/api/services/?userId=${username}&token=${token}`
-    ).then((response: any) => {
-      services.value = response.data.results
-      loaded.value = true
-    }).catch((e : any) => {
-      services.value = []
-      loaded.value = false
+    onBeforeMount(async () => {
+      $q.loading.show()
+      await api.get(
+        `/api/services/?userId=${username}&token=${token}`
+      ).then((response: any) => {
+        services.value = response.data.results
+        loaded.value = services.value.length > 0 ? true : false
+      }).catch((e : any) => {
+        services.value = []
+        loaded.value = false
+      })
+      $q.loading.hide()
     })
 
     return {
