@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar class="bg-amber-10">
         <q-toolbar-title>
-          Login
+          Quasar Web App
         </q-toolbar-title>
         <q-btn
           flat
@@ -38,6 +38,43 @@
             :key="link.title"
             v-bind="link"
           />
+
+          <q-item
+            v-if="loggedin"
+            clickable
+            tag="a"
+            href="#/logout"
+          >
+            <q-item-section
+              avatar
+            >
+              <q-icon name="logout" color="amber-10" size="md" />
+            </q-item-section>
+
+            <q-item-section
+              class="q-my-md"
+            >
+              <q-item-label class="text-h5 text-weight-medium">Logout</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item
+            v-else
+            clickable
+            tag="a"
+            href="#/login"
+          >
+            <q-item-section
+              avatar
+            >
+              <q-icon name="login" color="amber-10" size="md" />
+            </q-item-section>
+
+            <q-item-section
+              class="q-my-md"
+            >
+              <q-item-label class="text-h5 text-weight-medium">Login</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
 
@@ -52,6 +89,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
+import { useStore } from 'src/store';
 
 const linksList = [
   {
@@ -74,11 +112,6 @@ const linksList = [
     title: 'Services 5',
     link: '#/services5'
   },
-  {
-    title: 'Login',
-    icon: 'login',
-    link: '#/login'
-  },
 ];
 
 export default defineComponent({
@@ -91,9 +124,15 @@ export default defineComponent({
   setup () {
     const leftDrawerOpen = ref(false)
 
+    const store = useStore()
+    const token = store.getters.token
+
+    const loggedin = token.length === 0 ? false : true
+
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
+      loggedin,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }

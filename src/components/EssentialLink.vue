@@ -54,6 +54,6 @@ export default defineComponent({
       type: String,
       default: ''
     }
-  }
+  },
 });
 </script>

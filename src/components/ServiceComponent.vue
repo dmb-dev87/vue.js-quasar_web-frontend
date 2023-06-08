@@ -15,7 +15,7 @@ import {
   toRef,
   Ref,
 } from 'vue';
-import { useStore, loginModule } from 'src/store';
+import { useStore } from 'src/store';
 
 export default defineComponent({
   name: 'ServiceComponent',
