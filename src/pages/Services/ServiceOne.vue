@@ -1,63 +1,63 @@
 <template>
-  <q-page class="row items-center justify-evenly q-px-lg">
+  <q-page class="row justify-evenly q-pa-lg" style="display: list-item;">
     <div
       v-if="!loaded"
       class="row justify-center"
     >
-      <p class="text-h5 text-negative">No Services</p>
+      <p class="text-h5 text-negative">No Services Available</p>
     </div>
     <div
-      class="row q-py-md"
+      class="row q-py-xs"
       style="border-bottom: 2px solid grey;"
       v-for="service in services"
     >
       <div
-        class="col-12 q-mb-md"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Contact: </span>
-        <span class="text-h6 text-weight-medium">{{ service['contact'] }}</span>
+        <span class="text-body1 text-weight-bolder">Contact: </span>
+        <span class="text-body1 text-weight-medium">{{ service['contact'] }}</span>
       </div>
       <div
-        class="col-12 q-mb-md"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Passengers: </span>
-        <span class="text-h6 text-weight-medium">{{ service['passengers'] }}</span>
+        <span class="text-body1 text-weight-bolder">Passengers: </span>
+        <span class="text-body1 text-weight-medium">{{ service['passengers'] }}</span>
       </div>
       <div
-        class="col-12 q-mb-md"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Vehicle: </span>
-        <span class="text-h6 text-weight-medium">{{ service['car_name'] }}</span>
+        <span class="text-body1 text-weight-bolder">Vehicle: </span>
+        <span class="text-body1 text-weight-medium">{{ service['car_name'] }}</span>
       </div>
       <div
-        class="col-12 q-mb-md"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Pickup Date: </span>
-        <span class="text-h6 text-weight-medium">{{ service['realstartdatetime'] }}</span>
+        <span class="text-body1 text-weight-bolder">Pickup Date: </span>
+        <span class="text-body1 text-weight-medium">{{ service['realstartdatetime'] }}</span>
       </div>
       <div
-        class="col-12 q-mb-md"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Pickup: </span>
-        <span class="text-h6 text-weight-medium">{{ service['realstartplace'] }}</span>
+        <span class="text-body1 text-weight-bolder">Pickup: </span>
+        <span class="text-body1 text-weight-medium">{{ service['realstartplace'] }}</span>
       </div>
       <div
-        class="col-12 q-mb-md"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Dropoff: </span>
-        <span class="text-h6 text-weight-medium">{{ service['realendplace'] }}</span>
+        <span class="text-body1 text-weight-bolder">Dropoff: </span>
+        <span class="text-body1 text-weight-medium">{{ service['realendplace'] }}</span>
       </div>
       <div
-        class="col-12 q-mb-md"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Payment to driver: </span>
-        <span class="text-h6 text-weight-medium text-positive">{{ service['pay_to_driver'] ? "YES" : "NO" }}</span>
+        <span class="text-body1 text-weight-bolder">Payment to driver: </span>
+        <span class="text-body1 text-weight-medium text-positive">{{ service['pay_to_driver'] ? "YES" : "NO" }}</span>
       </div>
       <div
-        class="col-12"
+        class="col-12 q-mb-xs"
       >
-        <span class="text-h6 text-weight-bolder">Service type: </span>
-        <span class="text-h6 text-weight-medium">{{ service['servicetype'] }}</span>
+        <span class="text-body1 text-weight-bolder">Service type: </span>
+        <span class="text-body1 text-weight-medium">{{ service['servicetype'] }}</span>
       </div>
     </div>
   </q-page>
