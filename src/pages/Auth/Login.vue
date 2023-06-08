@@ -8,7 +8,7 @@
         <div class="col">
           <q-card square class="shadow-24">
             <q-card-section>
-              <q-form @submit.prevent.stop="onSubmit" @reset.prevent.stop="onReset" class="q-px-lg q-pt-xl">
+              <q-form @submit.prevent.stop="onSubmit" class="q-px-lg q-pt-xl">
                 <q-input
                   class="q-mb-lg"
                   ref="urlRef"
@@ -51,7 +51,7 @@
                 </q-input>
                 <div class="row q-py-lg justify-center">
                   <div class="col-6 col-md-4">
-                    <q-btn size="lg" color="amber-10" class="text-white full-width" label="LOGIN" type="submit"/>
+                    <q-btn size="lg" color="amber-10" class="text-white full-width" label="LOGIN" type="submit" :loading="loading" />
                   </div>
                 </div>
               </q-form>
@@ -70,10 +70,13 @@ import { useStore } from 'src/store'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: 'Login',
   setup() {
+    const $q = useQuasar()
+
     const store = useStore()
 
     const urlVal = ref(null)
@@ -87,9 +90,11 @@ export default defineComponent({
 
     const router = useRouter()
 
+    const loading = ref(false)
+
     return {
       store,
-
+      loading,
       urlVal,
       urlRef,
       urlRules: [
@@ -106,10 +111,12 @@ export default defineComponent({
       pwdVal,
       pwdRef,
       pwdRules: [
-        (val: string) => (val && val.length > 0) || 'Password is required'
+        (val: string) => (val && val.length > 0) || 'Password is required',
       ],
 
-      onSubmit () {
+      onSubmit: async () => {
+        loading.value = true
+
         const valid = () => {
           urlRef.value.validate()
           nameRef.value.validate()
@@ -135,28 +142,27 @@ export default defineComponent({
             headers: headers
           })
 
-          api.get(
+          await api.get(
             `/api/?email=${nameVal.value}&password=${pwdVal.value}`,
           )
             .then((response: any) => {
               store.commit('setToken', response.data.token)
+              store.commit('setLoggedin', true)
               router.push("/services1")
             })
             .catch((e: any) => {
-              console.log("++++++++++++++++++++ Failed", e)
+              store.commit('setLoggedin', false)
+              $q.notify({
+                message: 'Login Failed',
+                color: 'negative',
+                position: 'center',
+                icon: 'error',
+              })
             })
         }
+
+        loading.value = false
       },
-
-      onReset () {
-        urlVal.value = null
-        nameVal.value = null
-        pwdVal.value = null
-
-        urlRef.value.resetValidation()
-        nameRef.value.resetValidation()
-        pwdRef.value.resetValidation()
-      }
     }
   },
   methods: {

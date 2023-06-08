@@ -40,10 +40,9 @@
           />
 
           <q-item
-            v-if="loggedin"
             clickable
             tag="a"
-            href="#/logout"
+            @click="logout"
           >
             <q-item-section
               avatar
@@ -55,24 +54,6 @@
               class="q-my-md"
             >
               <q-item-label class="text-h5 text-weight-medium">Logout</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item
-            v-else
-            clickable
-            tag="a"
-            href="#/login"
-          >
-            <q-item-section
-              avatar
-            >
-              <q-icon name="login" color="amber-10" size="md" />
-            </q-item-section>
-
-            <q-item-section
-              class="q-my-md"
-            >
-              <q-item-label class="text-h5 text-weight-medium">Login</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -90,6 +71,8 @@
 import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
 import { useStore } from 'src/store';
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const linksList = [
   {
@@ -126,6 +109,10 @@ export default defineComponent({
 
     const store = useStore()
     const token = store.getters.token
+    const url = store.getters.url
+    const username = store.getters.username
+
+    const router = useRouter()
 
     const loggedin = token.length === 0 ? false : true
 
@@ -135,8 +122,35 @@ export default defineComponent({
       loggedin,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+      logout: async () => {
+        let headers = {
+          'Content-Type': 'application/json',
+        }
+
+        const api = axios.create({
+          baseURL: `https://${url}.demoserver.pro`,
+          headers: headers
+        })
+
+        await api.get(
+          `/api/logout?userid=${username}&token=${token}`,
+        )
+          .then((response: any) => {
+            console.log(response.data)
+          })
+          .catch((e: any) => {
+            console.log(e.message)
+          })
+
+        store.commit('setUrl', "")
+        store.commit('setUsername', "")
+        store.commit('setToken', "")
+        store.commit('setLoggedin', false)
+
+        router.push("/login")
       }
     }
-  }
+  },
 });
 </script>

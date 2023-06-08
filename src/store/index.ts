@@ -14,29 +14,36 @@ class LoginState {
   url = ""
   username = ""
   token = ""
+  loggedin = false
 }
 
 class LoginGetters extends Getters<LoginState> {
-  get url() {
+  get url () {
     return this.state.url
   }
   get username() {
     return this.state.username
   }
-  get token() {
+  get token () {
     return this.state.token
+  }
+  get loggedin () {
+    return this.state.loggedin
   }
 }
 
 class LoginMutations extends Mutations<LoginState> {
-  setUrl(url: string) {
+  setUrl (url: string) {
     this.state.url = url
   }
-  setUsername(username: string) {
+  setUsername (username: string) {
     this.state.username = username
   }
-  setToken(token: string) {
+  setToken (token: string) {
     this.state.token = token
+  }
+  setLoggedin (loggedin: boolean) {
+    this.state.loggedin = loggedin
   }
 }
 
