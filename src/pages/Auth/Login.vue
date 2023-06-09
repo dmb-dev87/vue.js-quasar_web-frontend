@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useStore } from 'src/store'
+import { useLoginStore } from 'src/store'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
@@ -77,7 +77,7 @@ export default defineComponent({
   setup() {
     const $q = useQuasar()
 
-    const store = useStore()
+    const store = useLoginStore()
 
     const urlVal = ref("")
     const urlRef = ref()
@@ -123,10 +123,11 @@ export default defineComponent({
 
         const valid = (urlRef.value.hasError || nameRef.value.hasError || pwdRef.value.hasError) ? false : true
 
+        store.mutations.setUrl(urlVal.value)
+
         if (valid === true) {
           await login(urlVal.value, nameVal.value, pwdVal.value)
             .then((response: any) => {
-              store.commit('setUrl', urlVal.value)
               store.commit('setUsername', nameVal.value)
               store.commit('setToken', response.data.token)
               store.commit('setLoggedin', true)

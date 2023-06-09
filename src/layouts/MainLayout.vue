@@ -70,7 +70,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
-import { useStore } from 'src/store';
+import { useLoginStore } from 'src/store';
 import { useRouter } from 'vue-router'
 import { logout } from 'src/services/AuthService';
 
@@ -106,7 +106,7 @@ export default defineComponent({
 
   setup () {
     const leftDrawerOpen = ref(false)
-    const store = useStore()
+    const store = useLoginStore()
     const router = useRouter()
     const loggedin = store.getters.loggedin
 

@@ -1,3 +1,4 @@
+import { plugins } from 'app/postcss.config.cjs';
 import { userInfo } from 'os';
 import { store } from 'quasar/wrappers'
 import { InjectionKey } from 'vue'
@@ -9,6 +10,7 @@ import {
   Getters,
   Mutations,
 } from 'vuex-smart-module'
+import createPersistedState from 'vuex-persistedstate'
 
 class LoginState {
   url = ""
@@ -59,11 +61,20 @@ const loginConfig = {
 export const loginModule = new Module(loginConfig)
 
 export default store(function (/* { ssrContext } */) {
-  const loginStore = createStore(loginModule, {
-    strict: !!process.env.DEBUGGING
-  });
+  const loginStore = createStore(
+    loginModule,
+    {
+      plugins: [createPersistedState()],
+      strict: !!process.env.DEBUGGING
+    }
+  );
 
   return loginStore;
 })
 
-export const useStore = createComposable(loginModule)
+export const loginStore = createStore(loginModule, {
+  plugins: [createPersistedState()],
+  strict: !!process.env.DEBUGGING
+})
+
+export const useLoginStore = createComposable(loginModule)

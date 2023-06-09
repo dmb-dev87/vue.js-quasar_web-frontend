@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useStore } from 'src/store';
+import { useLoginStore } from 'src/store';
 import { getBaseUrl } from './utility';
 
 const login = (url: string, username: string, password: string) => {
@@ -16,7 +16,7 @@ const login = (url: string, username: string, password: string) => {
 }
 
 const logout = () => {
-  const store = useStore()
+  const store = useLoginStore()
   const url = store.getters.url
   const username = store.getters.username
   const token = store.getters.token
