@@ -71,6 +71,7 @@ import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
+import { getBaseUrl } from 'src/boot/axios'
 
 export default defineComponent({
   name: 'Login',
@@ -138,7 +139,7 @@ export default defineComponent({
           }
 
           const api = axios.create({
-            baseURL: `https://${urlVal.value}.demoserver.pro`,
+            baseURL: getBaseUrl(urlVal.value),
             headers: headers
           })
 

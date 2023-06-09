@@ -73,6 +73,7 @@ import EssentialLink from 'components/EssentialLink.vue';
 import { useStore } from 'src/store';
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { getBaseUrl } from 'src/boot/axios';
 
 const linksList = [
   {
@@ -129,7 +130,7 @@ export default defineComponent({
         }
 
         const api = axios.create({
-          baseURL: `https://${url}.demoserver.pro`,
+          baseURL: getBaseUrl(url),
           headers: headers
         })
 

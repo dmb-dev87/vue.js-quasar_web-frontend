@@ -70,6 +70,7 @@ import { useStore } from 'src/store';
 import axios from 'axios';
 import { ref } from 'vue'
 import { useQuasar } from 'quasar';
+import { getBaseUrl } from 'src/boot/axios';
 
 export default defineComponent({
   name: 'ServiceOne',
@@ -86,7 +87,7 @@ export default defineComponent({
     const loaded = ref(true)
 
     const api = axios.create({
-      baseURL: `https://${url}.demoserver.pro`,
+      baseURL: getBaseUrl(url),
       headers: {
         'Content-Type': 'application/json'
       }

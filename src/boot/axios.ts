@@ -13,6 +13,31 @@ declare module '@vue/runtime-core' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
+
+const getBaseUrl = (instUrl: string) => {
+  let completeUrl = ''
+  instUrl = instUrl.trim()
+
+  if (!instUrl) {
+    instUrl = 'fakenotexistingurl'
+  } else {
+    if (instUrl.charAt(instUrl.length -1) === '/') {
+      instUrl = instUrl.slice(0, -1)
+    }
+    if (instUrl.startsWith('http')) {
+      completeUrl = instUrl
+    } else if (instUrl.search('.')) {
+      completeUrl = `https://${instUrl}`
+    }
+  }
+
+  if (!completeUrl) {
+    completeUrl = `https://${instUrl}.demoserver.pro`
+  }
+
+  return completeUrl
+}
+
 const api = axios.create({ baseURL: 'https://api.example.com' });
 
 export default boot(({ app }) => {
@@ -27,4 +52,4 @@ export default boot(({ app }) => {
   //       so you can easily perform requests against your app's API
 });
 
-export { api };
+export { api, getBaseUrl };
