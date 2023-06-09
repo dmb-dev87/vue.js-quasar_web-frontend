@@ -69,9 +69,8 @@ import { defineComponent } from 'vue'
 import { useStore } from 'src/store'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import axios from 'axios'
 import { useQuasar } from 'quasar'
-import { getBaseUrl } from 'src/boot/axios'
+import { login } from 'src/services/AuthService'
 
 export default defineComponent({
   name: 'Login',
@@ -80,14 +79,14 @@ export default defineComponent({
 
     const store = useStore()
 
-    const urlVal = ref(null)
-    const urlRef = ref(null)
+    const urlVal = ref("")
+    const urlRef = ref()
 
-    const nameVal = ref(null)
-    const nameRef = ref(null)
+    const nameVal = ref("")
+    const nameRef = ref()
 
-    const pwdVal = ref(null)
-    const pwdRef = ref(null)
+    const pwdVal = ref("")
+    const pwdRef = ref()
 
     const router = useRouter()
 
@@ -118,35 +117,17 @@ export default defineComponent({
       onSubmit: async () => {
         loading.value = true
 
-        const valid = () => {
-          urlRef.value.validate()
-          nameRef.value.validate()
-          pwdRef.value.validate()
+        urlRef.value.validate()
+        nameRef.value.validate()
+        pwdRef.value.validate()
 
-          if (urlRef.value.hasError || nameRef.value.hasError || pwdRef.value.hasError) {
-            return false
-          } else {
-            return true
-          }
-        }
+        const valid = (urlRef.value.hasError || nameRef.value.hasError || pwdRef.value.hasError) ? false : true
 
-        if (valid) {
-          store.commit('setUrl', urlVal.value)
-          store.commit('setUsername', nameVal.value)
-
-          let headers = {
-            'Content-Type': 'application/json',
-          }
-
-          const api = axios.create({
-            baseURL: getBaseUrl(urlVal.value),
-            headers: headers
-          })
-
-          await api.get(
-            `/api/?email=${nameVal.value}&password=${pwdVal.value}`,
-          )
+        if (valid === true) {
+          await login(urlVal.value, nameVal.value, pwdVal.value)
             .then((response: any) => {
+              store.commit('setUrl', urlVal.value)
+              store.commit('setUsername', nameVal.value)
               store.commit('setToken', response.data.token)
               store.commit('setLoggedin', true)
               router.push("/services1")

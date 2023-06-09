@@ -72,8 +72,7 @@ import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
 import { useStore } from 'src/store';
 import { useRouter } from 'vue-router'
-import axios from 'axios'
-import { getBaseUrl } from 'src/boot/axios';
+import { logout } from 'src/services/AuthService';
 
 const linksList = [
   {
@@ -107,51 +106,38 @@ export default defineComponent({
 
   setup () {
     const leftDrawerOpen = ref(false)
-
     const store = useStore()
-    const token = store.getters.token
-    const url = store.getters.url
-    const username = store.getters.username
-
     const router = useRouter()
-
-    const loggedin = token.length === 0 ? false : true
+    const loggedin = store.getters.loggedin
 
     return {
+      store,
+      router,
       essentialLinks: linksList,
       leftDrawerOpen,
       loggedin,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
-      logout: async () => {
-        let headers = {
-          'Content-Type': 'application/json',
-        }
-
-        const api = axios.create({
-          baseURL: getBaseUrl(url),
-          headers: headers
-        })
-
-        await api.get(
-          `/api/logout?userid=${username}&token=${token}`,
-        )
-          .then((response: any) => {
-            console.log(response.data)
-          })
-          .catch((e: any) => {
-            console.log(e.message)
-          })
-
-        store.commit('setUrl', "")
-        store.commit('setUsername', "")
-        store.commit('setToken', "")
-        store.commit('setLoggedin', false)
-
-        router.push("/login")
-      }
     }
   },
+  methods: {
+    logout () {
+      // logout()
+      //   .then((response: any) => {
+      //     console.log(response.data)
+      //   })
+      //   .catch((e: any) => {
+      //     console.log(e.message)
+      //   })
+
+      this.store.commit('setUrl', "")
+      this.store.commit('setUsername', "")
+      this.store.commit('setToken', "")
+      this.store.commit('setLoggedin', false)
+
+      this.router.push("/login")
+    }
+  }
 });
 </script>
