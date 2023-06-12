@@ -15,7 +15,7 @@ import {
   toRef,
   Ref,
 } from 'vue';
-import { useLoginStore } from 'src/store';
+import { useStore } from 'src/store';
 
 export default defineComponent({
   name: 'ServiceComponent',
@@ -29,7 +29,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const store = useLoginStore()
+    const store = useStore()
     return { store }
   },
 });

@@ -70,7 +70,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
-import { useLoginStore } from 'src/store';
+import { useStore } from 'src/store';
 import { useRouter } from 'vue-router'
 import { logout } from 'src/services/AuthService';
 
@@ -106,7 +106,7 @@ export default defineComponent({
 
   setup () {
     const leftDrawerOpen = ref(false)
-    const store = useLoginStore()
+    const store = useStore()
     const router = useRouter()
     const loggedin = store.getters.loggedin
 
@@ -125,16 +125,14 @@ export default defineComponent({
     logout () {
       // logout()
       //   .then((response: any) => {
-      //     console.log(response.data)
       //   })
       //   .catch((e: any) => {
-      //     console.log(e.message)
       //   })
 
-      this.store.commit('setUrl', "")
-      this.store.commit('setUsername', "")
-      this.store.commit('setToken', "")
-      this.store.commit('setLoggedin', false)
+      this.store.commit('authentication/setUrl', "")
+      this.store.commit('authentication/setUsername', "")
+      this.store.commit('authentication/setToken', "")
+      this.store.commit('authentication/setLoggedin', false)
 
       this.router.push("/login")
     }

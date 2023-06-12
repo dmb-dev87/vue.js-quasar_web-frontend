@@ -1,80 +1,66 @@
-import { plugins } from 'app/postcss.config.cjs';
-import { userInfo } from 'os';
 import { store } from 'quasar/wrappers'
 import { InjectionKey } from 'vue'
 import { Router } from 'vue-router'
 import {
   createStore,
-  Module,
-  createComposable,
-  Getters,
-  Mutations,
-} from 'vuex-smart-module'
+  Store as VuexStore,
+  useStore as vuexUseStore,
+} from 'vuex'
+import authentication from './authentication'
+import { AuthStateInterface } from './authentication/state'
 import createPersistedState from 'vuex-persistedstate'
 
-class LoginState {
-  url = ""
-  username = ""
-  token = ""
-  loggedin = false
+/*
+ * If not building with SSR mode, you can
+ * directly export the Store instantiation;
+ *
+ * The function below can be async too; either use
+ * async/await or return a Promise which resolves
+ * with the Store instance.
+ */
+
+export interface StateInterface {
+  // Define your own store structure, using submodules if needed
+  // example: ExampleStateInterface;
+  // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
+  authentication: AuthStateInterface
 }
 
-class LoginGetters extends Getters<LoginState> {
-  get url () {
-    return this.state.url
-  }
-  get username() {
-    return this.state.username
-  }
-  get token () {
-    return this.state.token
-  }
-  get loggedin () {
-    return this.state.loggedin
-  }
-}
-
-class LoginMutations extends Mutations<LoginState> {
-  setUrl (url: string) {
-    this.state.url = url
-  }
-  setUsername (username: string) {
-    this.state.username = username
-  }
-  setToken (token: string) {
-    this.state.token = token
-  }
-  setLoggedin (loggedin: boolean) {
-    this.state.loggedin = loggedin
+// provide typings for `this.$store`
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $store: VuexStore<StateInterface>
   }
 }
 
-const loginConfig = {
-  state: LoginState,
-  getters: LoginGetters,
-  mutations: LoginMutations,
-  modules: {
+// provide typings for `useStore` helper
+export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-key')
 
-  }
-}
-
-export const loginModule = new Module(loginConfig)
+// Provide typings for `this.$router` inside Vuex store
+ declare module 'vuex' {
+   export interface Store<S> {
+     readonly $router: Router;
+   }
+ }
 
 export default store(function (/* { ssrContext } */) {
-  const loginStore = createStore(
-    loginModule,
-    {
-      plugins: [createPersistedState()],
-      strict: !!process.env.DEBUGGING
-    }
-  );
+  const Store = createStore<StateInterface>({
+    modules: {
+      authentication
+    },
+    plugins: [
+      createPersistedState({
+        key: 'authentication',
+        paths: ['authentication'],
+      })
+    ],
 
-  return loginStore;
+    strict: !!process.env.DEBUGGING
+  })
+
+  return Store;
 })
 
-export const loginStore = createStore(loginModule, {
-  plugins: [createPersistedState()],
-  strict: !!process.env.DEBUGGING
-})
-
-export const useLoginStore = createComposable(loginModule)
+export function useStore() {
+  return vuexUseStore(storeKey)
+}

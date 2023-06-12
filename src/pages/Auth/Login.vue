@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useLoginStore } from 'src/store'
+import { useStore } from 'src/store'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
@@ -77,7 +77,7 @@ export default defineComponent({
   setup() {
     const $q = useQuasar()
 
-    const store = useLoginStore()
+    const store = useStore()
 
     const urlVal = ref("")
     const urlRef = ref()
@@ -123,18 +123,17 @@ export default defineComponent({
 
         const valid = (urlRef.value.hasError || nameRef.value.hasError || pwdRef.value.hasError) ? false : true
 
-        store.mutations.setUrl(urlVal.value)
-
         if (valid === true) {
           await login(urlVal.value, nameVal.value, pwdVal.value)
             .then((response: any) => {
-              store.commit('setUsername', nameVal.value)
-              store.commit('setToken', response.data.token)
-              store.commit('setLoggedin', true)
+              store.commit('authentication/setUrl', urlVal.value)
+              store.commit('authentication/setUsername', nameVal.value)
+              store.commit('authentication/setToken', response.data.token)
+              store.commit('authentication/setLoggedin', true)
               router.push("/services1")
             })
             .catch((e: any) => {
-              store.commit('setLoggedin', false)
+              store.commit('authentication/setLoggedin', false)
               $q.notify({
                 message: 'Login Failed',
                 color: 'negative',

@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { useLoginStore } from 'src/store';
+import { useStore } from 'src/store';
 import { getBaseUrl } from './utility';
 
 const getServices = () => {
-  const store = useLoginStore()
-  const url = store.getters.url
-  const userId = store.getters.username
-  const token = store.getters.token
+  const store = useStore()
+  const url = store.state.authentication.url
+  const userId = store.state.authentication.username
+  const token = store.state.authentication.token
 
   const api = axios.create({
     baseURL: getBaseUrl(url),

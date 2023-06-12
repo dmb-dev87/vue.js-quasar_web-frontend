@@ -34,7 +34,7 @@ export default route(function ({ store /*, ssrContext */ }) {
   });
 
   Router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth) && !store.getters.loggedin) {
+    if (to.matched.some(record => record.meta.requiresAuth) && !store.state.authentication.loggedin) {
       next({ path: '/login', query: { next: to.fullPath } })
     } else {
       next()

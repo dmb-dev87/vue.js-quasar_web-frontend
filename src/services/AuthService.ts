@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useLoginStore } from 'src/store';
+import { useStore } from 'src/store';
 import { getBaseUrl } from './utility';
 
 const login = (url: string, username: string, password: string) => {
@@ -16,10 +16,10 @@ const login = (url: string, username: string, password: string) => {
 }
 
 const logout = () => {
-  const store = useLoginStore()
-  const url = store.getters.url
-  const username = store.getters.username
-  const token = store.getters.token
+  const store = useStore()
+  const url = store.state.authentication.url
+  const username = store.state.authentication.username
+  const token = store.state.authentication.token
 
   const api = axios.create({
     baseURL: getBaseUrl(url),
