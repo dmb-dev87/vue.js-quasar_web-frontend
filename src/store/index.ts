@@ -7,7 +7,9 @@ import {
   useStore as vuexUseStore,
 } from 'vuex'
 import authentication from './authentication'
+import localeModule from './locale'
 import { AuthStateInterface } from './authentication/state'
+import { LocaleStateInterface } from './locale/state'
 import createPersistedState from 'vuex-persistedstate'
 
 /*
@@ -23,7 +25,8 @@ export interface StateInterface {
   // Define your own store structure, using submodules if needed
   // example: ExampleStateInterface;
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
-  authentication: AuthStateInterface
+  authentication: AuthStateInterface,
+  locale: LocaleStateInterface
 }
 
 // provide typings for `this.$store`
@@ -46,7 +49,8 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-ke
 export default store(function (/* { ssrContext } */) {
   const Store = createStore<StateInterface>({
     modules: {
-      authentication
+      authentication,
+      localeModule
     },
     plugins: [
       createPersistedState({

@@ -1,6 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
-
+import { LocalStorage } from 'quasar';
 import { messages } from 'src/i18n';
 
 export type MessageLanguages = keyof typeof messages;
@@ -22,8 +22,9 @@ declare module 'vue-i18n' {
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
 export default boot(({ app }) => {
+  let locale = LocalStorage.getItem('locale')
   const i18n = createI18n({
-    locale: 'en-us',
+    locale: locale ? locale.toString() : 'en-us',
     fallbackLocale: 'en-us',
     messages,
   });

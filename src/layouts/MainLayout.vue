@@ -48,11 +48,16 @@
             </q-item-section>
           </q-item>
 
-          <EssentialLink
-            v-for="link in essentialLinks"
-            :key="link.title"
-            v-bind="link"
-          />
+          <q-item
+            clickable
+            @click="dialog = true"
+          >
+            <q-item-section
+              class="q-my-md"
+            >
+              <q-item-label class="text-h5 text-weight-medium text-amber-10">Change Language</q-item-label>
+            </q-item-section>
+          </q-item>
 
           <q-item
             clickable
@@ -76,6 +81,8 @@
 
     </q-drawer>
 
+    <SettingLanguage v-model="dialog" />
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -84,27 +91,16 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
+import SettingLanguage from 'src/components/SettingLanguage.vue';
 import { useStore } from 'src/store';
 import { useRouter } from 'vue-router'
 import { logout } from 'src/services/AuthService';
 
-const essentialLinks = [
-  {
-    title: 'Change Language',
-    link: '#/changelanguage'
-  },
-]
-
 export default defineComponent({
   name: 'MainLayout',
-
   components: {
-    EssentialLink
+    SettingLanguage
   },
-
-
-
   setup () {
     const leftDrawerOpen = ref(false)
     const store = useStore()
@@ -112,11 +108,11 @@ export default defineComponent({
     const loggedin = store.getters.loggedin
 
     return {
+      dialog: ref(false),
       store,
       router,
       leftDrawerOpen,
       loggedin,
-      essentialLinks: essentialLinks,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
