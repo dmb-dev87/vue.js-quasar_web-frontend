@@ -1,14 +1,12 @@
 <template>
   <q-dialog v-model="dialog" persistent>
-    <q-card class="col-12 col-md-4">
+    <q-card style="width: 300px;">
       <q-card-section class="row items-center">
-        <span class="q-ml-sm">{{ $t('message.change_lang_to') }}</span>
+        <span>Choose Language</span>
       </q-card-section>
 
       <q-card-section class="row items-center">
-        <q-list
-          bordered
-        >
+        <q-list style="width: 100%;">
           <q-item
             clickable
             v-for="lang in localeOptions"
@@ -72,7 +70,6 @@ export default defineComponent({
   },
   watch: {
     locale(locale) {
-      console.log("++++++++++++", locale)
       this.$i18n.locale = locale
       this.store.commit('localeModule/setLocale', locale)
       this.$q.localStorage.set('locale', locale)
