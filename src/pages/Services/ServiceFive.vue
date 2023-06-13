@@ -1,7 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly">
     <service-component
-      title="Service Five"
+      :title="title"
       active
     ></service-component>
   </q-page>
@@ -14,5 +14,11 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'IndexPage',
   components: { ServiceComponent },
+
+  data () {
+    return {
+      title: `${this.$t('message.services')} Five`
+    }
+  }
 });
 </script>

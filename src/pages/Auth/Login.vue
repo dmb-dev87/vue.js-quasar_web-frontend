@@ -13,8 +13,8 @@
                   class="q-mb-lg"
                   ref="urlRef"
                   v-model="urlVal"
-                  label="URL *"
-                  hint="Enter the url of your installation"
+                  :label="$t('message.url')"
+                  :hint="$t('message.insert_installation_url')"
                   lazy-rules
                   :rules="urlRules"
                 >
@@ -26,8 +26,8 @@
                   class="q-mb-lg"
                   ref="nameRef"
                   v-model="nameVal"
-                  label="User Name *"
-                  hint="Enter your username"
+                  :label="$t('message.username')"
+                  :hint="$t('message.insert_username')"
                   lazy-rules
                   :rules="nameRules"
                 >
@@ -40,8 +40,8 @@
                   ref="pwdRef"
                   v-model="pwdVal"
                   type="password"
-                  label="Password"
-                  hint="Enter your password"
+                  :label="$t('message.password')"
+                  :hint="$t('message.insert_password')"
                   lazy-rules
                   :rules="pwdRules"
                 >
@@ -51,7 +51,7 @@
                 </q-input>
                 <div class="row q-py-lg justify-center">
                   <div class="col-6 col-md-4">
-                    <q-btn size="lg" color="amber-10" class="text-white full-width" label="LOGIN" type="submit" :loading="loading" />
+                    <q-btn size="lg" color="amber-10" class="text-white full-width" :label="$t('message.login')" type="submit" :loading="loading" />
                   </div>
                 </div>
               </q-form>
@@ -99,7 +99,7 @@ export default defineComponent({
       urlRef,
       urlRules: [
         (val: string) => (val && val.length > 0) || 'URL is required',
-        (val: string) => (val && val.search("http") == -1) || 'Please double check the fields',
+        (val: string) => (val && val.search("http") == -1) || ('message.fields_error'),
       ],
 
       nameVal,

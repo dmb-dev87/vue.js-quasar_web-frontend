@@ -5,7 +5,7 @@
     <q-header elevated>
       <q-toolbar class="bg-amber-10">
         <q-toolbar-title>
-          Login
+          {{ $t('message.access') }}
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

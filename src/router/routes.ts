@@ -11,6 +11,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/services3', component: () => import('pages/Services/ServiceThree.vue') },
       { path: '/services4', component: () => import('pages/Services/ServiceFour.vue') },
       { path: '/services5', component: () => import('pages/Services/ServiceFive.vue') },
+      { path: '/changelanguage', component: () => import('pages/Settings/ChangeLanguage.vue') },
     ],
     meta: { requiresAuth: true }
   },

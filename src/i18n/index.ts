@@ -1,5 +1,9 @@
 import enUS from './en-US';
+import itIT from './it'
 
-export default {
-  'en-US': enUS
-};
+const messages = {
+  'en-us': enUS,
+  'it': itIT
+}
+
+export { messages }

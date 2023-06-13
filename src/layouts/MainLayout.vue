@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar class="bg-amber-10">
         <q-toolbar-title>
-          Quasar Web App
+          {{ $t('message.welcome') }}
         </q-toolbar-title>
         <q-btn
           flat
@@ -33,6 +33,21 @@
             </p>
           </q-item-label>
 
+          <q-item
+            clickable
+            v-for="link in serviceLinks"
+            tag="a"
+            :href="link.link"
+            :key="link.title"
+            v-bind="link"
+          >
+            <q-item-section
+              class="q-my-md"
+            >
+              <q-item-label class="text-h5 text-weight-medium text-amber-10">{{ `${$t('message.services')} ${link.title}` }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
           <EssentialLink
             v-for="link in essentialLinks"
             :key="link.title"
@@ -53,7 +68,7 @@
             <q-item-section
               class="q-my-md"
             >
-              <q-item-label class="text-h5 text-weight-medium">Logout</q-item-label>
+              <q-item-label class="text-h5 text-weight-medium">{{ $t('message.logout') }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -74,28 +89,12 @@ import { useStore } from 'src/store';
 import { useRouter } from 'vue-router'
 import { logout } from 'src/services/AuthService';
 
-const linksList = [
+const essentialLinks = [
   {
-    title: 'Services 1',
-    link: '#/services1'
+    title: 'Change Language',
+    link: '#/changelanguage'
   },
-  {
-    title: 'Services 2',
-    link: '#/services2'
-  },
-  {
-    title: 'Services 3',
-    link: '#/services3'
-  },
-  {
-    title: 'Services 4',
-    link: '#/services4'
-  },
-  {
-    title: 'Services 5',
-    link: '#/services5'
-  },
-];
+]
 
 export default defineComponent({
   name: 'MainLayout',
@@ -103,6 +102,8 @@ export default defineComponent({
   components: {
     EssentialLink
   },
+
+
 
   setup () {
     const leftDrawerOpen = ref(false)
@@ -113,12 +114,38 @@ export default defineComponent({
     return {
       store,
       router,
-      essentialLinks: linksList,
       leftDrawerOpen,
       loggedin,
+      essentialLinks: essentialLinks,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
+    }
+  },
+  data () {
+    return {
+      serviceLinks: [
+        {
+          title: '1',
+          link: '#/services1'
+        },
+        {
+          title: '2',
+          link: '#/services2'
+        },
+        {
+          title: '3',
+          link: '#/services3'
+        },
+        {
+          title: '4',
+          link: '#/services4'
+        },
+        {
+          title: '5',
+          link: '#/services5'
+        },
+      ],
     }
   },
   methods: {
