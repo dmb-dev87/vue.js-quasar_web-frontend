@@ -2,8 +2,16 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="bg-amber-10">
+        <q-btn
+          flat
+          dense
+          round
+          icon="arrow_back_ios"
+          aria-label="Menu"
+          @click="gotoBack"
+        />
         <q-toolbar-title>
-          {{ $t('message.welcome') }}
+          {{ $route.meta.title ? $t(`${$route.meta.title}`) : $t('message.welcome') }}
         </q-toolbar-title>
         <q-btn
           flat
@@ -116,6 +124,9 @@ export default defineComponent({
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
+      gotoBack () {
+        router.back()
+      }
     }
   },
   data () {

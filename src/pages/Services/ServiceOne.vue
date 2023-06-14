@@ -49,7 +49,13 @@
             class="col-12 q-mb-xs"
           >
             <span class="text-body1 text-weight-bolder">{{ $t('message.pagamento_autista') }}: </span>
-            <span class="text-body1 text-weight-medium text-positive">{{ service.pay_to_driver ? "YES" : "NO" }}</span>
+            <span v-if="service.pay_to_driver" class="text-body1 text-weight-bolder text-red-14">
+              <q-icon name="euro" />
+              {{ service.to_be_paid.toFixed(2) }}
+            </span>
+            <span v-else class="text-body1 text-weight-medium text-positive">
+              {{ "NO" }}
+            </span>
           </div>
           <div
             class="col-12 q-mb-xs"

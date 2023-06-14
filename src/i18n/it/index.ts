@@ -26,6 +26,8 @@ export default {
     cancel: 'Cancella',
     vehicle: 'Veicolo',
     start: 'Partenza',
+    start_datetime: 'Data/Ora partenza',
+    end_datetime: 'Data/Or fine',
     pickup_date: 'Data Pickup',
     from: 'Da',
     to: 'A',
@@ -36,11 +38,13 @@ export default {
     passengers: 'Passeggeri',
     email: 'Email',
     dettagli_prenotazione: 'Dettagli prenotazione',
+    service_details: 'Dettagli servizio',
     pickup: 'Pickup',
     dropoff: 'Dropoff',
     yes: 'Si',
     no_available_services: 'Nessun servizio disponibile',
     service_type: 'Tipo servizio',
     vehicle_list: 'Veicoli',
+    drawn: 'Disegnata',
   }
 }
