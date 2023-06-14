@@ -9,11 +9,6 @@
 <script lang="ts">
 import {
   defineComponent,
-  PropType,
-  computed,
-  ref,
-  toRef,
-  Ref,
 } from 'vue';
 import { useStore } from 'src/store';
 

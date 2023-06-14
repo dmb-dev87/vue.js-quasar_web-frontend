@@ -18,6 +18,23 @@ const getServices = () => {
   return api.get(`/api/services/?userId=${userId}&token=${token}`)
 }
 
+const getService = (id: any) => {
+  const store = useStore()
+  const url = store.state.authentication.url
+  const userId = store.state.authentication.username
+  const token = store.state.authentication.token
+
+  const api = axios.create({
+    baseURL: getBaseUrl(url),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  return api.get(`/api/service/${id}/?userId=${userId}&token=${token}`)
+}
+
 export {
-  getServices
+  getServices,
+  getService
 }
