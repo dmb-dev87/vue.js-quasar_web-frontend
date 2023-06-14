@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { useQuasar } from 'quasar';
+import { useQuasar, QSpinnerDots } from 'quasar';
 import { useRouter } from 'vue-router';
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import ServiceDetailInterface from 'src/models/Services';
@@ -79,7 +79,11 @@ export default defineComponent({
     const id = router.currentRoute.value.params.id
 
     onBeforeMount(async () => {
-      $q.loading.show()
+      $q.loading.show({
+        spinner: QSpinnerDots,
+        spinnerColor: 'amber-10',
+        spinnerSize: 100
+      })
       await getService(id)
         .then((response: any) => {
           service.value = response.data.results[0]
