@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="dialog" persistent>
+  <q-dialog v-model="dialog">
     <q-card style="width: 300px;">
       <q-card-section class="row items-center">
         <span>Choose Language</span>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { useStore } from 'src/store';
 import { useQuasar } from 'quasar';
 
