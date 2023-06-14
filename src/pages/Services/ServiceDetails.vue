@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <div class="q-pa-md row items-start">
+    <div class="q-pa-md row items-start" v-if="loaded">
       <q-card class="row q-mb-md" style="width: 100%;" bordered flat>
         <q-card-section class="bg-grey-12" style="width: 100%;">
           <div class="text-h6">{{ service?.contact }}</div>
@@ -95,6 +95,7 @@ import { useRouter } from 'vue-router';
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import ServiceDetailInterface from 'src/models/Services';
 import { getService } from 'src/services/ServicesDataService';
+import { load } from 'mime';
 
 export default defineComponent({
   name: 'ServiceDetails',
@@ -102,7 +103,7 @@ export default defineComponent({
     const $q = useQuasar()
     const router = useRouter()
     const service = ref<ServiceDetailInterface>()
-    const loaded = ref(true)
+    const loaded = ref(false)
 
     const id = router.currentRoute.value.params.id
 
