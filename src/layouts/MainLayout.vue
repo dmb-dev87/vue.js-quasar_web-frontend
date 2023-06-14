@@ -3,6 +3,7 @@
     <q-header elevated>
       <q-toolbar class="bg-amber-10">
         <q-btn
+          v-if="$route.meta.backable"
           flat
           dense
           round
