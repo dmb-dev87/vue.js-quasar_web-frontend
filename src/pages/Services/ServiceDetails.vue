@@ -108,7 +108,7 @@
             </div>
           </q-btn>
         </q-card-actions>
-        <q-card-actions v-if="service.accepted && !started" class="q-py-lg" align="around" style="width: 100%;">
+        <q-card-actions v-if="service?.accepted && !started" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="start">
             Start
           </q-btn>
@@ -116,7 +116,7 @@
             Cost
           </q-btn>
         </q-card-actions>
-        <q-card-actions v-else-if="service.accepted === null" class="q-py-lg" align="around" style="width: 100%;">
+        <q-card-actions v-else-if="service?.accepted === null" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="accept">
             Accept
           </q-btn>
@@ -177,7 +177,7 @@ import { useQuasar, QSpinnerDots } from 'quasar';
 import { useRouter } from 'vue-router';
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import ServiceDetailInterface from 'src/models/Services';
-import { getService, acceptService, startService } from 'src/services/ServicesDataService';
+import { getService, acceptService, startService, endService } from 'src/services/ServicesDataService';
 
 export default defineComponent({
   name: 'ServiceDetails',
@@ -226,7 +226,7 @@ export default defineComponent({
         })
     }
 
-    const startedService =async (id: any, kmdata: any) => {
+    const startedService = async (id: any, kmdata: any) => {
       await startService(id, kmdata)
         .then((res: any) => {
           if (res.data.status === false) {
@@ -234,6 +234,19 @@ export default defineComponent({
             error.value = true
           } else {
             started.value = true
+          }
+        }).catch((e: any) => {
+          error_msg.value = e.message
+          error.value = true
+        })
+    }
+
+    const endedService = async (id: any, kmdata: any) => {
+      await endService(id, kmdata)
+        .then((res: any) => {
+          if (res.data.status === false) {
+            error_msg.value = res.data.error
+            error.value = true
           }
         }).catch((e: any) => {
           error_msg.value = e.message
@@ -273,14 +286,12 @@ export default defineComponent({
           isValid: val => val.length > 0,
           type: 'number'
         }
-      }).onOk(async (data) => {
+      }).onOk((data) => {
         error.value = !(data >= km.value)
-
-
         if (data >= km.value) {
           startedService(id, data)
         } else {
-          error_msg.value = `Minimu km ${service?.value.start_kms}. In case km are correct contact your manager!`
+          error_msg.value = `Minimu km ${service?.value?.start_kms}. In case km are correct contact your manager!`
           error.value = true
         }
       }).onCancel(() => {
@@ -298,6 +309,7 @@ export default defineComponent({
           type: 'number'
         }
       }).onOk((data) => {
+        endedService(id, data)
       }).onCancel(() => {
       })
     }

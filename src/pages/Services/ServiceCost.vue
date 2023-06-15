@@ -70,17 +70,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-
-const items = [
-  "Motorway toll",
-  "Ovemight"
-]
+import { defineComponent, onBeforeMount, ref } from 'vue'
+import { useQuasar, QSpinnerDots } from 'quasar'
+import { useRouter } from 'vue-router';
+import { getCostItems, addCost } from 'src/services/ServicesDataService'
 
 export default defineComponent({
   name: 'ServiceCost',
   setup () {
+    const $q = useQuasar()
+    const router = useRouter()
+
+    const id = router.currentRoute.value.params.id
+
     const item = ref("")
+    const items = ref([])
     const amount = ref("")
     const quantity = ref(1)
     const total = ref("")
@@ -88,13 +92,39 @@ export default defineComponent({
 
     const loading = ref(false)
 
-    const onSubmit = () => {
-      loading.value = true
+    onBeforeMount(async () => {
+      $q.loading.show({
+        spinner: QSpinnerDots,
+        spinnerColor: 'amber-10',
+        spinnerSize: 100
+      })
+      await getCostItems()
+        .then((response: any) => {
+          items.value = response.data.result
+        }).catch((e: any) => {
+          items.value = []
+        })
+      $q.loading.hide()
+    })
+
+    const onSubmit = async () => {
+      $q.loading.show({
+        spinner: QSpinnerDots,
+        spinnerColor: 'amber-10',
+        spinnerSize: 100
+      })
+      await addCost(id, item.value, amount.value, quantity.value, total.value, note.value)
+        .then((response: any) => {
+          console.log("+++++++++++++++", response)
+        }).catch((e: any) => {
+          console.log("+++++++++++++++", e.message)
+        })
+      $q.loading.hide()
     }
 
     return {
       item,
-      items: items,
+      items,
       amount,
       quantity,
       total,
