@@ -27,7 +27,7 @@ const logout = () => {
     }
   })
 
-  return api.get(`/api/logout?userid=${userId}&token=${token}`)
+  return api.get(`/api/logout/?userid=${userId}&token=${token}`)
 }
 
 export {

@@ -44,7 +44,7 @@ const acceptService = (id: any, accepted: string) => {
     }
   })
 
-  return api.get(`/api/aceept-reject?token=${token}&userId=${userId}&service=${id}&accept=${accepted}`)
+  return api.get(`/api/aceept-reject/?token=${token}&userId=${userId}&service=${id}&accept=${accepted}`)
 }
 
 const startService = (id: any, kms: any) => {
@@ -59,7 +59,7 @@ const startService = (id: any, kms: any) => {
     }
   })
 
-  return api.get(`/api/start-service/${id}?token=${token}&userId=${userId}&kms=${kms}`)
+  return api.get(`/api/start-service/${id}/?token=${token}&userId=${userId}&kms=${kms}`)
 }
 
 export {
