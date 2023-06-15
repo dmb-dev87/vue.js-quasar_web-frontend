@@ -86,20 +86,41 @@
         </q-card-actions>
         <q-card-actions v-else-if="started" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="accept">
-            Press
+            <div>
+              <div class="row justify-center items-center q-mb-sm">
+                <q-icon name="fas fa-file-alt" />
+              </div>
+              <div class="row">
+                Press
+              </div>
+            </div>
           </q-btn>
           <q-btn color="amber-10" flat @click="end">
-            Ends
+            <div>
+              <div class="row justify-center items-center q-mb-sm">
+                <q-icon name="fas fa-stop" />
+              </div>
+              <div class="row">
+                Ends
+              </div>
+            </div>
           </q-btn>
           <q-btn color="amber-10" flat @click="costed = true">
-            Cost
+            <div>
+              <div class="row justify-center items-center q-mb-sm">
+                <q-icon name="fas fa-money-check-alt" />
+              </div>
+              <div class="row">
+                Cost
+              </div>
+            </div>
           </q-btn>
         </q-card-actions>
         <q-card-actions v-else class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="start">
             Start
           </q-btn>
-          <q-btn color="red-10" flat>
+          <q-btn color="red-10" flat @click="costed=true">
             Cost
           </q-btn>
         </q-card-actions>
