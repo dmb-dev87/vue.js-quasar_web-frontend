@@ -76,15 +76,7 @@
         </q-card-section>
       </q-card>
       <q-card class="row" style="width: 100%;" flat>
-        <q-card-actions v-if="!accepted" class="q-py-lg" align="around" style="width: 100%;">
-          <q-btn color="amber-10" flat @click="accept">
-            Accept
-          </q-btn>
-          <q-btn color="red-10" flat @click="reject">
-            Reject
-          </q-btn>
-        </q-card-actions>
-        <q-card-actions v-else-if="started" class="q-py-lg" align="around" style="width: 100%;">
+        <q-card-actions v-if="started" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="accept">
             <div>
               <div class="row justify-center items-center q-mb-sm">
@@ -116,12 +108,20 @@
             </div>
           </q-btn>
         </q-card-actions>
-        <q-card-actions v-else class="q-py-lg" align="around" style="width: 100%;">
+        <q-card-actions v-if="service.accepted && !started" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="start">
             Start
           </q-btn>
           <q-btn color="red-10" flat @click="costed=true">
             Cost
+          </q-btn>
+        </q-card-actions>
+        <q-card-actions v-else-if="service.accepted === null" class="q-py-lg" align="around" style="width: 100%;">
+          <q-btn color="amber-10" flat @click="accept">
+            Accept
+          </q-btn>
+          <q-btn color="red-10" flat @click="reject">
+            Reject
           </q-btn>
         </q-card-actions>
       </q-card>
@@ -161,9 +161,8 @@
             <div class="text-h6">Error</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
-            Minimu km {{ service?.start_kms }}. In case km are correct contact your manager!
+            {{ error_msg }}
           </q-card-section>
-
           <q-card-actions align="right">
             <q-btn flat label="OK" color="primary" v-close-popup />
           </q-card-actions>
@@ -193,6 +192,7 @@ export default defineComponent({
     const accepted = ref(false)
     const started = ref(false)
     const error = ref(false)
+    const error_msg = ref("")
     const costed = ref(false)
 
     const km = ref()
@@ -206,30 +206,38 @@ export default defineComponent({
       await getService(id)
         .then((response: any) => {
           service.value = response.data.results[0]
-          console.log("+++++++++++++++", service.value)
           km.value = service.value?.start_kms
           loaded.value = service.value ? true : false
         }).catch((e: any) => {
           loaded.value = false
+          error_msg.value = e.message
+          error.value = true
         })
       $q.loading.hide()
     })
 
-    const acceptedService =async (id: any, accetped: string) => {
+    const acceptedService = async (id: any, accetped: string) => {
       await acceptService(id, accetped)
         .then((res: any) => {
-          console.log("+++++++++++++++", res.data)
+          service.value.accepted = res.data.status
         }).catch((e: any) => {
-          console.log(e)
+          error_msg.value = e.message
+          error.value = true
         })
     }
 
     const startedService =async (id: any, kmdata: any) => {
       await startService(id, kmdata)
         .then((res: any) => {
-          console.log("+++++++++++++++", res.data)
+          if (res.data.status === false) {
+            error_msg.value = "We cannot start this service."
+            error.value = true
+          } else {
+            started.value = true
+          }
         }).catch((e: any) => {
-          console.log(e)
+          error_msg.value = e.message
+          error.value = true
         })
     }
 
@@ -249,7 +257,7 @@ export default defineComponent({
         message: 'Are you sure you want to refuse the services?',
         cancel: true,
       }).onOk(() => {
-
+        acceptedService(id, 'rejected')
       }).onCancel(() => {
 
       })
@@ -267,10 +275,13 @@ export default defineComponent({
         }
       }).onOk(async (data) => {
         error.value = !(data >= km.value)
-        started.value = (data >= km.value)
+
 
         if (data >= km.value) {
           startedService(id, data)
+        } else {
+          error_msg.value = `Minimu km ${service?.value.start_kms}. In case km are correct contact your manager!`
+          error.value = true
         }
       }).onCancel(() => {
         started.value = false
@@ -299,10 +310,10 @@ export default defineComponent({
       accepted,
       start,
       error,
+      error_msg,
       started,
       end,
       costed,
-      acceptedService
     }
   }
 })

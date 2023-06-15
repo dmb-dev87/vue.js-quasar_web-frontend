@@ -40,7 +40,7 @@ const acceptService = (id: any, accepted: string) => {
   const api = axios.create({
     baseURL: getBaseUrl(url),
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     }
   })
 
