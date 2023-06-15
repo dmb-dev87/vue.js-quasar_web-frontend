@@ -158,18 +158,17 @@ export default defineComponent({
   },
   methods: {
     logout () {
-      // logout()
-      //   .then((response: any) => {
-      //   })
-      //   .catch((e: any) => {
-      //   })
+      logout()
+        .then((response: any) => {
+          this.store.commit('authentication/setUrl', "")
+          this.store.commit('authentication/setUsername', "")
+          this.store.commit('authentication/setToken', "")
+          this.store.commit('authentication/setLoggedin', false)
 
-      this.store.commit('authentication/setUrl', "")
-      this.store.commit('authentication/setUsername', "")
-      this.store.commit('authentication/setToken', "")
-      this.store.commit('authentication/setLoggedin', false)
-
-      this.router.push("/login")
+          this.router.push("/login")
+        })
+        .catch((e: any) => {
+        })
     }
   }
 });

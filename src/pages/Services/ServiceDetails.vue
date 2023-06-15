@@ -178,7 +178,7 @@ import { useQuasar, QSpinnerDots } from 'quasar';
 import { useRouter } from 'vue-router';
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import ServiceDetailInterface from 'src/models/Services';
-import { getService } from 'src/services/ServicesDataService';
+import { getService, acceptService, startService } from 'src/services/ServicesDataService';
 
 export default defineComponent({
   name: 'ServiceDetails',
@@ -206,6 +206,7 @@ export default defineComponent({
       await getService(id)
         .then((response: any) => {
           service.value = response.data.results[0]
+          console.log("+++++++++++++++", service.value)
           km.value = service.value?.start_kms
           loaded.value = service.value ? true : false
         }).catch((e: any) => {
@@ -214,12 +215,30 @@ export default defineComponent({
       $q.loading.hide()
     })
 
+    const acceptedService =async (id: any, accetped: string) => {
+      await acceptService(id, accetped)
+        .then((res: any) => {
+          console.log("+++++++++++++++", res.data)
+        }).catch((e: any) => {
+          console.log(e)
+        })
+    }
+
+    const startedService =async (id: any, kmdata: any) => {
+      await startService(id, kmdata)
+        .then((res: any) => {
+          console.log("+++++++++++++++", res.data)
+        }).catch((e: any) => {
+          console.log(e)
+        })
+    }
+
     const accept = () => {
       $q.dialog({
         message: 'Are you sure you want to accept the services?',
         cancel: true,
       }).onOk(() => {
-        accepted.value = true
+        acceptedService(id, 'accepted')
       }).onCancel(() => {
         accepted.value = false
       })
@@ -246,9 +265,13 @@ export default defineComponent({
           isValid: val => val.length > 0,
           type: 'number'
         }
-      }).onOk((data) => {
+      }).onOk(async (data) => {
         error.value = !(data >= km.value)
         started.value = (data >= km.value)
+
+        if (data >= km.value) {
+          startedService(id, data)
+        }
       }).onCancel(() => {
         started.value = false
       })
@@ -278,7 +301,8 @@ export default defineComponent({
       error,
       started,
       end,
-      costed
+      costed,
+      acceptedService
     }
   }
 })

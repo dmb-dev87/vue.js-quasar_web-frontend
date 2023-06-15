@@ -13,6 +13,9 @@ const mutation: MutationTree<AuthStateInterface> = {
   },
   setToken (state: AuthStateInterface, token: string) {
     state.token = token
+  },
+  setUserid (state: AuthStateInterface, userid: string) {
+    state.userId = userid
   }
 };
 

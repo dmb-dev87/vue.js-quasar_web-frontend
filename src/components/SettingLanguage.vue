@@ -71,7 +71,6 @@ export default defineComponent({
   watch: {
     locale(locale) {
       this.$i18n.locale = locale
-      this.store.commit('localeModule/setLocale', locale)
       this.$q.localStorage.set('locale', locale)
     }
   },

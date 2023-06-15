@@ -126,9 +126,12 @@ export default defineComponent({
         if (valid === true) {
           await login(urlVal.value, nameVal.value, pwdVal.value)
             .then((response: any) => {
+              console.log("++++++++++++", response.data)
+              const res = response.data
               store.commit('authentication/setUrl', urlVal.value)
               store.commit('authentication/setUsername', nameVal.value)
               store.commit('authentication/setToken', response.data.token)
+              store.commit('authentication/setUserid', res.userId)
               store.commit('authentication/setLoggedin', true)
               router.push("/services1")
             })

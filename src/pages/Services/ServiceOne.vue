@@ -115,10 +115,5 @@ export default defineComponent({
       router
     }
   },
-  methods: {
-    gotoDetails (id: string) {
-      this.router.push(`/services/${id}`)
-    }
-  }
 });
 </script>

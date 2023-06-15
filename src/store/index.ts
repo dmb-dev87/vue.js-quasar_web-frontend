@@ -46,6 +46,8 @@ export const storeKey: InjectionKey<VuexStore<StateInterface>> = Symbol('vuex-ke
    }
  }
 
+ let myStore: any
+
 export default store(function (/* { ssrContext } */) {
   const Store = createStore<StateInterface>({
     modules: {
@@ -62,8 +64,12 @@ export default store(function (/* { ssrContext } */) {
     strict: !!process.env.DEBUGGING
   })
 
+  myStore = Store
+
   return Store;
 })
+
+export { myStore }
 
 export function useStore() {
   return vuexUseStore(storeKey)
