@@ -104,40 +104,41 @@
           </q-btn>
         </q-card-actions>
       </q-card>
-      <q-card class="row" v-if="costed" style="width: 100%;" bordered flat>
-        <q-card-section class="bg-grey-12" style="width: 100%;">
-          <div class="text-h6">Add Cost</div>
-        </q-card-section>
-        <q-card-section class="q-pa-sm" style="width: 100%;">
-          <q-list>
-            <q-item
-              clickable
-              :href='`#/servicecost/${service?.id}`'
-            >
-              <q-item-section avatar>
-                <q-icon name="far fa-map"/>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>On the service</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable>
-              <q-item-section avatar>
-                <q-icon name="fas fa-car"/>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>On the vehicle</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card-section>
-      </q-card>
+      <q-dialog v-model="costed" title="Add Cost" position="bottom">
+        <q-card class="row rounded-borders" style="width: 100%;" bordered flat>
+          <q-card-section style="width: 100%;">
+            <div class="text-h6">Add Cost</div>
+          </q-card-section>
+          <q-card-section class="q-pa-sm" style="width: 100%;">
+            <q-list>
+              <q-item
+                clickable
+                :href='`#/servicecost/${service?.id}`'
+              >
+                <q-item-section avatar>
+                  <q-icon name="far fa-map"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>On the service</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section avatar>
+                  <q-icon name="fas fa-car"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>On the vehicle</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
       <q-dialog v-model="error">
         <q-card>
           <q-card-section>
             <div class="text-h6">Error</div>
           </q-card-section>
-
           <q-card-section class="q-pt-none">
             Minimu km {{ service?.start_kms }}. In case km are correct contact your manager!
           </q-card-section>
@@ -173,7 +174,7 @@ export default defineComponent({
     const error = ref(false)
     const costed = ref(false)
 
-    const km = ref(0)
+    const km = ref()
 
     onBeforeMount(async () => {
       $q.loading.show({
