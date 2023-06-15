@@ -76,15 +76,77 @@
         </q-card-section>
       </q-card>
       <q-card class="row" style="width: 100%;" flat>
-        <q-card-actions class="q-py-lg" align="around" style="width: 100%;">
-          <q-btn color="amber-10" flat>
+        <q-card-actions v-if="!accepted" class="q-py-lg" align="around" style="width: 100%;">
+          <q-btn color="amber-10" flat @click="accept">
             Accept
           </q-btn>
-          <q-btn color="red-10" flat>
+          <q-btn color="red-10" flat @click="reject">
             Reject
           </q-btn>
         </q-card-actions>
+        <q-card-actions v-else-if="started" class="q-py-lg" align="around" style="width: 100%;">
+          <q-btn color="amber-10" flat @click="accept">
+            Press
+          </q-btn>
+          <q-btn color="amber-10" flat @click="end">
+            Ends
+          </q-btn>
+          <q-btn color="amber-10" flat @click="costed = true">
+            Cost
+          </q-btn>
+        </q-card-actions>
+        <q-card-actions v-else class="q-py-lg" align="around" style="width: 100%;">
+          <q-btn color="amber-10" flat @click="start">
+            Start
+          </q-btn>
+          <q-btn color="red-10" flat>
+            Cost
+          </q-btn>
+        </q-card-actions>
       </q-card>
+      <q-card class="row" v-if="costed" style="width: 100%;" bordered flat>
+        <q-card-section class="bg-grey-12" style="width: 100%;">
+          <div class="text-h6">Add Cost</div>
+        </q-card-section>
+        <q-card-section class="q-pa-sm" style="width: 100%;">
+          <q-list>
+            <q-item
+              clickable
+              :href='`#/servicecost/${service?.id}`'
+            >
+              <q-item-section avatar>
+                <q-icon name="far fa-map"/>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>On the service</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable>
+              <q-item-section avatar>
+                <q-icon name="fas fa-car"/>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>On the vehicle</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+      </q-card>
+      <q-dialog v-model="error">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Error</div>
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">
+            Minimu km {{ service?.start_kms }}. In case km are correct contact your manager!
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="OK" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -95,7 +157,6 @@ import { useRouter } from 'vue-router';
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import ServiceDetailInterface from 'src/models/Services';
 import { getService } from 'src/services/ServicesDataService';
-import { load } from 'mime';
 
 export default defineComponent({
   name: 'ServiceDetails',
@@ -107,6 +168,13 @@ export default defineComponent({
 
     const id = router.currentRoute.value.params.id
 
+    const accepted = ref(false)
+    const started = ref(false)
+    const error = ref(false)
+    const costed = ref(false)
+
+    const km = ref(0)
+
     onBeforeMount(async () => {
       $q.loading.show({
         spinner: QSpinnerDots,
@@ -116,6 +184,7 @@ export default defineComponent({
       await getService(id)
         .then((response: any) => {
           service.value = response.data.results[0]
+          km.value = service.value?.start_kms
           loaded.value = service.value ? true : false
         }).catch((e: any) => {
           loaded.value = false
@@ -123,9 +192,71 @@ export default defineComponent({
       $q.loading.hide()
     })
 
+    const accept = () => {
+      $q.dialog({
+        message: 'Are you sure you want to accept the services?',
+        cancel: true,
+      }).onOk(() => {
+        accepted.value = true
+      }).onCancel(() => {
+        accepted.value = false
+      })
+    }
+
+    const reject = () => {
+      $q.dialog({
+        message: 'Are you sure you want to refuse the services?',
+        cancel: true,
+      }).onOk(() => {
+
+      }).onCancel(() => {
+
+      })
+    }
+
+    const start = () => {
+      $q.dialog({
+        title: 'Start Service',
+        cancel: true,
+        prompt: {
+          model: '',
+          placeholder: 'Enter the initial km',
+          isValid: val => val.length > 0,
+          type: 'number'
+        }
+      }).onOk((data) => {
+        error.value = !(data >= km.value)
+        started.value = (data >= km.value)
+      }).onCancel(() => {
+        started.value = false
+      })
+    }
+
+    const end = () => {
+      $q.dialog({
+        title: 'End Service',
+        cancel: true,
+        prompt: {
+          model: '',
+          placeholder: 'Enter the Final km',
+          type: 'number'
+        }
+      }).onOk((data) => {
+      }).onCancel(() => {
+      })
+    }
+
     return {
       service,
       loaded,
+      accept,
+      reject,
+      accepted,
+      start,
+      error,
+      started,
+      end,
+      costed
     }
   }
 })

@@ -13,6 +13,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/services5', meta: {title: 'message.services'}, component: () => import('pages/Services/ServiceFive.vue') },
       { path: '/services/:id', meta: {title: 'message.service_details', backable: true}, component: () => import('pages/Services/ServiceDetails.vue') },
       { path: '/seedraft/:id', meta: {title: 'message.drawn', backable: true}, component: () => import('pages/Services/SeeDraft.vue') },
+      { path: '/servicecost/:id', meta: {title: 'message.servicecost', backable: true}, component: () => import('pages/Services/ServiceCost.vue') },
     ],
     meta: { requiresAuth: true }
   },

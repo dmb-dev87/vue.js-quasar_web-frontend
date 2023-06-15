@@ -46,5 +46,7 @@ export default {
     service_type: 'Tipo servizio',
     vehicle_list: 'Veicoli',
     drawn: 'Disegnata',
+    servicecost: 'Enter cost on service',
+    save: 'Salva',
   }
 }
