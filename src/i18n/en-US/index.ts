@@ -54,5 +54,7 @@ export default {
     save: 'Save',
     check_position: 'Check Position',
     no_service_available_in_date: 'No services available on the specified date/time',
+    attention: 'Attention',
+    no_position_in_date: 'No location found on the specified date/time',
   }
 }

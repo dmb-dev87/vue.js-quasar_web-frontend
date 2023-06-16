@@ -47,10 +47,11 @@
 
 <script lang="ts">
 import 'leaflet/dist/leaflet.css'
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent } from 'vue'
 import { LMap, LTileLayer } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
 import { checkLocations } from 'src/services/PositionService'
+import { QSpinnerDots, date } from 'quasar'
 
 export default defineComponent({
   name: 'CheckPosition',
@@ -81,7 +82,10 @@ export default defineComponent({
       let service = ''
 
       if (data.service) {
-
+        service += this.$t('message.start') + ': ' + date.formatDate(data.service.suggestedstartdate, 'YYYY-MM-DD HH:mm:ss') + '<br/>'
+        service += this.$t('message.contact') + ': ' + data.service.contact.toUpperCase() + '<br/>'
+        service += this.$t('message.vehicle') + ': ' + data.service.car_name + '<br/>'
+        service += this.$t('message.service_type') + ': ' + data.service.servicetype
       } else {
         service = this.$t('message.no_service_available_in_date')
       }
@@ -89,17 +93,22 @@ export default defineComponent({
       return service
     },
     async retrievePosition () {
+      this.$q.loading.show({
+        spinner: QSpinnerDots,
+        spinnerColor: 'amber-10',
+        spinnerSize: 100
+      })
       await checkLocations(this.dateVal, this.timeVal)
         .then((res: any) => {
-          console.log("+++++++++++++", res.data)
           const data = res.data
           if (data.position == null) {
-
+            this.$q.dialog({
+              title: this.$t('message.attention'),
+              message: this.$t('message.no_position_in_date')
+            })
           } else {
             const pos = data.position
             const popupContent = this.getPopupContent(data)
-            console.log("+++++++++++++++++++", [pos.latitude, pos.longitude])
-            console.log("++++++++++++++++++", this.mymap)
             this.mymap.setView([pos.latitude, pos.longitude], 15)
             if (this.currentMarker == null) {
               this.currentMarker = L.marker([pos.latitude, pos.longitude]).addTo(this.mymap)
@@ -113,6 +122,7 @@ export default defineComponent({
         }).catch((e: any) => {
 
         })
+      this.$q.loading.hide()
     },
     updateProxyDate () {
       this.proxyDate = this.dateVal
@@ -122,11 +132,15 @@ export default defineComponent({
     },
     saveDate () {
       this.dateVal = this.proxyDate
-      this.retrievePosition()
+      if (this.timeVal) {
+        this.retrievePosition()
+      }
     },
     saveTime () {
       this.timeVal = this.proxyTime
-      this.retrievePosition()
+      if (this.dateVal) {
+        this.retrievePosition()
+      }
     }
   },
 })

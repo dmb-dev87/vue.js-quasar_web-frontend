@@ -76,7 +76,7 @@
         </q-card-section>
       </q-card>
       <q-card class="row" style="width: 100%;" flat>
-        <q-card-actions v-if="started" class="q-py-lg" align="around" style="width: 100%;">
+        <q-card-actions v-if="(started || (service?.accepted == true && service?.status == 'in_progress') )" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="accept">
             <div>
               <div class="row justify-center items-center q-mb-sm">
@@ -108,7 +108,7 @@
             </div>
           </q-btn>
         </q-card-actions>
-        <q-card-actions v-if="service?.accepted && !started" class="q-py-lg" align="around" style="width: 100%;">
+        <q-card-actions v-if="((service?.accepted && service?.status == 'confirmed') && !started)" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="start">
             Start
           </q-btn>
@@ -116,7 +116,7 @@
             Cost
           </q-btn>
         </q-card-actions>
-        <q-card-actions v-else-if="service?.accepted === null" class="q-py-lg" align="around" style="width: 100%;">
+        <q-card-actions v-else-if="(service?.accepted === null && service?.status == 'confirmed')" class="q-py-lg" align="around" style="width: 100%;">
           <q-btn color="amber-10" flat @click="accept">
             Accept
           </q-btn>
