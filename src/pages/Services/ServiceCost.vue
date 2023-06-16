@@ -119,6 +119,10 @@ export default defineComponent({
       await addCost(id, item.value, amount.value, quantity.value, amount.value, note.value)
         .then((response: any) => {
           router.back()
+          $q.notify({
+            message: 'Cost entered correctly',
+            color: 'positive'
+          })
         }).catch((e: any) => {
         })
       $q.loading.hide()

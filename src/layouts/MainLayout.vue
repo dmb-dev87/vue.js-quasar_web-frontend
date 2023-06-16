@@ -31,10 +31,10 @@
       bordered
       content-class="bg-grey-2"
     >
-      <q-scroll-area class="fit q-qa-sm">
-        <q-list>
+      <q-scroll-area class="fit">
+        <q-list class="q-px-md">
           <q-item-label
-            class="q-my-lg"
+            class="q-my-md"
             header
           >
             <p class="text-h2 text-weight-bolder text-center">
@@ -49,10 +49,9 @@
             :href="link.link"
             :key="link.title"
             v-bind="link"
+            class="q-my-md"
           >
-            <q-item-section
-              class="q-my-md"
-            >
+            <q-item-section>
               <q-item-label class="text-h5 text-weight-medium text-amber-10">{{ `${$t('message.services')} ${link.title}` }}</q-item-label>
             </q-item-section>
           </q-item>
@@ -61,10 +60,9 @@
             clickable
             tag="a"
             href="#/checkpostion"
+            class="q-my-md"
           >
-            <q-item-section
-              class="q-my-md"
-            >
+            <q-item-section>
               <q-item-label class="text-h5 text-weight-medium text-amber-10">{{ $t('message.check_position') }}</q-item-label>
             </q-item-section>
           </q-item>
@@ -72,30 +70,36 @@
           <q-item
             clickable
             @click="dialog = true"
+            class="q-my-md"
           >
-            <q-item-section
-              class="q-my-md"
-            >
+            <q-item-section>
               <q-item-label class="text-h5 text-weight-medium text-amber-10">Change Language</q-item-label>
             </q-item-section>
           </q-item>
 
           <q-item
             clickable
-            tag="a"
-            @click="logout"
+            @click="Logout"
+            class="q-my-md"
           >
-            <q-item-section
-              avatar
-            >
+            <q-item-section avatar>
               <q-icon name="logout" color="amber-10" size="md" />
             </q-item-section>
-
-            <q-item-section
-              class="q-my-md"
-            >
+            <q-item-section>
               <q-item-label class="text-h5 text-weight-medium">{{ $t('message.logout') }}</q-item-label>
             </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+          >
+            <q-toggle
+              v-model="trackgps"
+              color="amber-10"
+              icon="gps_fixed"
+              label="Tracking GPS"
+              size="xl"
+            />
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -112,6 +116,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { useQuasar } from 'quasar';
 import SettingLanguage from 'src/components/SettingLanguage.vue';
 import { useStore } from 'src/store';
 import { useRouter } from 'vue-router'
@@ -123,10 +128,31 @@ export default defineComponent({
     SettingLanguage
   },
   setup () {
+    const $q = useQuasar()
+
     const leftDrawerOpen = ref(false)
     const store = useStore()
     const router = useRouter()
     const loggedin = store.getters.loggedin
+
+    const Logout = () => {
+      $q.dialog({
+        title: 'Logout',
+        message: 'Are you sure you want to log out?',
+        cancel: true,
+      }).onOk(() => {
+        logout()
+          .then((res: any) => {
+            store.commit('authentication/setUrl', "")
+            store.commit('authentication/setUsername', "")
+            store.commit('authentication/setToken', "")
+            store.commit('authentication/setLoggedin', false)
+            router.push("/login")
+          })
+          .catch((e: any) => {
+          })
+      })
+    }
 
     return {
       dialog: ref(false),
@@ -139,7 +165,9 @@ export default defineComponent({
       },
       gotoBack () {
         router.back()
-      }
+      },
+      Logout,
+      trackgps: ref(true)
     }
   },
   data () {
@@ -168,20 +196,5 @@ export default defineComponent({
       ],
     }
   },
-  methods: {
-    logout () {
-      logout()
-        .then((response: any) => {
-          this.store.commit('authentication/setUrl', "")
-          this.store.commit('authentication/setUsername', "")
-          this.store.commit('authentication/setToken', "")
-          this.store.commit('authentication/setLoggedin', false)
-
-          this.router.push("/login")
-        })
-        .catch((e: any) => {
-        })
-    }
-  }
 });
 </script>

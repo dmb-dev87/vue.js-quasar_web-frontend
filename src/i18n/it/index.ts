@@ -24,6 +24,7 @@ export default {
     logout: 'Logout',
     confirm_logout: 'Sei sicuro di voler effettuare il logout?',
     cancel: 'Cancella',
+    set: 'Imposta',
     vehicle: 'Veicolo',
     start: 'Partenza',
     start_datetime: 'Data/Ora partenza',
@@ -49,5 +50,6 @@ export default {
     servicecost: 'Enter cost on service',
     save: 'Salva',
     check_position: 'Controlla posizione',
+    no_service_available_in_date: 'Nessun servizio disponibile nella data/ora specificata',
   }
 }

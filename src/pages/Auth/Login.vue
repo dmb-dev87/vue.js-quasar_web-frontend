@@ -126,7 +126,6 @@ export default defineComponent({
         if (valid === true) {
           await login(urlVal.value, nameVal.value, pwdVal.value)
             .then((response: any) => {
-              console.log("++++++++++++", response.data)
               const res = response.data
               store.commit('authentication/setUrl', urlVal.value)
               store.commit('authentication/setUsername', nameVal.value)

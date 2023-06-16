@@ -26,7 +26,8 @@ export default {
     make_logout: 'Logout',
     logout: 'Logout',
     confirm_logout: 'Are you sure you want to log out?',
-    cancel: 'Clear',
+    cancel: 'Cancel',
+    set: 'Set',
     vehicle: 'Vehicle',
     start: 'Departure',
     start_datetime: 'Departure Date/Time',
@@ -52,5 +53,6 @@ export default {
     servicecost: 'Enter cost on service',
     save: 'Save',
     check_position: 'Check Position',
+    no_service_available_in_date: 'No services available on the specified date/time',
   }
 }
