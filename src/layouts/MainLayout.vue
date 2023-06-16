@@ -59,6 +59,18 @@
 
           <q-item
             clickable
+            tag="a"
+            href="#/checkpostion"
+          >
+            <q-item-section
+              class="q-my-md"
+            >
+              <q-item-label class="text-h5 text-weight-medium text-amber-10">{{ $t('message.check_position') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
             @click="dialog = true"
           >
             <q-item-section

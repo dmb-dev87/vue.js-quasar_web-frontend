@@ -9,6 +9,7 @@
               :options="items"
               behavior="dialog"
               label="Select an item"
+              :rules="[val => !!val || 'Field is required']"
             >
               <template v-slot:before>
                 <q-icon name="fas fa-list" />
@@ -19,6 +20,7 @@
               dense
               label="Amount"
               hint="Enter an amount"
+              :rules="[val => !!val || 'Field is required']"
             >
               <template v-slot:before>
                 <q-icon name="fas fa-money-bill-wave" />
@@ -29,6 +31,7 @@
               dense
               label="Quantity"
               hint="Enter an amount"
+              :rules="[val => !!val || 'Field is required']"
             >
               <template v-slot:before>
                 <q-icon name="fas fa-plus" />
@@ -38,7 +41,7 @@
               </template>
             </q-input>
             <q-input
-              v-model="total"
+              v-model="amount"
               dense
               label="Total"
               hint="Enter total"
@@ -113,11 +116,10 @@ export default defineComponent({
         spinnerColor: 'amber-10',
         spinnerSize: 100
       })
-      await addCost(id, item.value, amount.value, quantity.value, total.value, note.value)
+      await addCost(id, item.value, amount.value, quantity.value, amount.value, note.value)
         .then((response: any) => {
-          console.log("+++++++++++++++", response)
+          router.back()
         }).catch((e: any) => {
-          console.log("+++++++++++++++", e.message)
         })
       $q.loading.hide()
     }

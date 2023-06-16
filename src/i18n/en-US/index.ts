@@ -51,5 +51,6 @@ export default {
     drawn: 'Drawn',
     servicecost: 'Enter cost on service',
     save: 'Save',
+    check_position: 'Check Position',
   }
 }

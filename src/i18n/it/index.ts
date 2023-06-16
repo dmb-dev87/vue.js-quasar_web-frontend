@@ -48,5 +48,6 @@ export default {
     drawn: 'Disegnata',
     servicecost: 'Enter cost on service',
     save: 'Salva',
+    check_position: 'Controlla posizione',
   }
 }
