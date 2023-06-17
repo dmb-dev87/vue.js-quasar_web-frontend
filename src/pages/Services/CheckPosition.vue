@@ -47,11 +47,13 @@
 
 <script lang="ts">
 import 'leaflet/dist/leaflet.css'
-import { defineComponent } from 'vue'
+import { defineComponent, onBeforeMount } from 'vue'
 import { LMap, LTileLayer } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
 import { checkLocations } from 'src/services/PositionService'
 import { QSpinnerDots, date } from 'quasar'
+import { useStore } from 'src/store'
+import { mapState } from 'vuex'
 
 export default defineComponent({
   name: 'CheckPosition',
@@ -60,8 +62,19 @@ export default defineComponent({
     LTileLayer
   },
   mounted () {
-    this.mymap = L.map('currpositionmap').setView([0, 0], 15)
+    const store = useStore()
+
+    const lat = store.state.authentication.latitude
+    const lng = store.state.authentication.longitude
+
+    this.mymap = L.map('currpositionmap').setView([lat, lng], 15)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(this.mymap)
+
+    if (this.currentMarker == null) {
+      this.currentMarker = L.marker([lat, lng]).addTo(this.mymap)
+    } else {
+      this.currentMarker.setLatLng(L.latLng(lat, lng))
+    }
   },
   data () {
     return {

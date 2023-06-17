@@ -99,6 +99,7 @@
               icon="gps_fixed"
               label="Tracking GPS"
               size="xl"
+              @click="trackingGPS"
             />
           </q-item>
         </q-list>
@@ -115,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onBeforeMount, onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import SettingLanguage from 'src/components/SettingLanguage.vue';
 import { useStore } from 'src/store';
@@ -134,6 +135,12 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
     const loggedin = store.getters.loggedin
+
+    const trackgps = ref(true)
+
+    onBeforeMount(() => {
+      trackgps.value = store.getters.trackgps
+    })
 
     const Logout = () => {
       $q.dialog({
@@ -154,6 +161,30 @@ export default defineComponent({
       })
     }
 
+    const trackingGPS = () => {
+      store.commit('authentication/setTrackGps', trackgps.value)
+      if (trackgps.value) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              store.commit('authentication/setLatitude', position.coords.latitude)
+              store.commit('authentication/setLongitude', position.coords.longitude)
+            },
+            (error: any) => {
+              store.commit('authentication/setLatitude', "0")
+              store.commit('authentication/setLongitude', "0")
+            }
+          )
+        } else {
+          store.commit('authentication/setLatitude', "0")
+          store.commit('authentication/setLongitude', "0")
+        }
+      } else {
+        store.commit('authentication/setLatitude', "0")
+        store.commit('authentication/setLongitude', "0")
+      }
+    }
+
     return {
       dialog: ref(false),
       store,
@@ -167,7 +198,8 @@ export default defineComponent({
         router.back()
       },
       Logout,
-      trackgps: ref(true)
+      trackgps,
+      trackingGPS
     }
   },
   data () {

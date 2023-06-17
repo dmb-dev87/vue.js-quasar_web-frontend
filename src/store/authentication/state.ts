@@ -4,6 +4,9 @@ export interface AuthStateInterface {
   username: string;
   token: string;
   loggedin: boolean;
+  trackgps: boolean;
+  latitude: string;
+  longitude: string;
 }
 
 function state(): AuthStateInterface {
@@ -13,6 +16,9 @@ function state(): AuthStateInterface {
     username: "",
     token: "",
     loggedin: false,
+    trackgps: false,
+    latitude: "",
+    longitude: ""
   };
 }
 
