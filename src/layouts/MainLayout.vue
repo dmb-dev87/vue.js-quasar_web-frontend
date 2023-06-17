@@ -134,13 +134,8 @@ export default defineComponent({
     const leftDrawerOpen = ref(false)
     const store = useStore()
     const router = useRouter()
-    const loggedin = store.getters.loggedin
-
-    const trackgps = ref(true)
-
-    onBeforeMount(() => {
-      trackgps.value = store.getters.trackgps
-    })
+    const loggedin = store.state.authentication.loggedin
+    const trackgps = ref(store.state.authentication.trackgps)
 
     const Logout = () => {
       $q.dialog({
@@ -169,10 +164,12 @@ export default defineComponent({
             (position) => {
               store.commit('authentication/setLatitude', position.coords.latitude)
               store.commit('authentication/setLongitude', position.coords.longitude)
+              window.location.reload();
             },
             (error: any) => {
               store.commit('authentication/setLatitude', "0")
               store.commit('authentication/setLongitude', "0")
+              window.location.reload();
             }
           )
         } else {
