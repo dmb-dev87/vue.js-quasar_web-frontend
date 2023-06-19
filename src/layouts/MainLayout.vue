@@ -116,12 +116,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, onMounted, ref } from 'vue';
-import { useQuasar } from 'quasar';
-import SettingLanguage from 'src/components/SettingLanguage.vue';
-import { useStore } from 'src/store';
+import { defineComponent, ref } from 'vue'
+import { useQuasar } from 'quasar'
+import SettingLanguage from 'src/components/SettingLanguage.vue'
+import { useStore } from 'src/store'
 import { useRouter } from 'vue-router'
-import { logout } from 'src/services/AuthService';
+import { logout } from 'src/services/AuthService'
+import { savePostion } from 'src/services/PositionService'
 
 export default defineComponent({
   name: 'MainLayout',
@@ -135,7 +136,7 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
     const loggedin = store.state.authentication.loggedin
-    const trackgps = ref(store.state.authentication.trackgps)
+    const trackgps = ref(store.state.authentication.position.trackgps)
 
     const Logout = () => {
       $q.dialog({
@@ -157,29 +158,7 @@ export default defineComponent({
     }
 
     const trackingGPS = () => {
-      store.commit('authentication/setTrackGps', trackgps.value)
-      if (trackgps.value) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              store.commit('authentication/setLatitude', position.coords.latitude)
-              store.commit('authentication/setLongitude', position.coords.longitude)
-              window.location.reload();
-            },
-            (error: any) => {
-              store.commit('authentication/setLatitude', "0")
-              store.commit('authentication/setLongitude', "0")
-              window.location.reload();
-            }
-          )
-        } else {
-          store.commit('authentication/setLatitude', "0")
-          store.commit('authentication/setLongitude', "0")
-        }
-      } else {
-        store.commit('authentication/setLatitude', "0")
-        store.commit('authentication/setLongitude', "0")
-      }
+      savePostion(trackgps.value)
     }
 
     return {

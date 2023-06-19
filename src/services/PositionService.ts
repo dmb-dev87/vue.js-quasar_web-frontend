@@ -17,6 +17,50 @@ const checkLocations = (date: any, time: any) => {
   return api.get(`/api/check-locations/?token=${token}&userId=${userId}&date=${date}&time=${time}`)
 }
 
+const savePostion = (trackgps: boolean) => {
+  if (trackgps) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          myStore.commit('authentication/setPosition', {
+            trackgps: trackgps,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            speed: position.coords.speed,
+            altitude: position.coords.altitude
+          })
+        },
+        (error: any) => {
+          myStore.commit('authentication/setPosition', {
+            trackgps: false,
+            latitude: "0",
+            longitude: "0",
+            speed: null,
+            altitude: null
+          })
+        }
+      )
+    } else {
+      myStore.commit('authentication/setPosition', {
+        trackgps: false,
+        latitude: "0",
+        longitude: "0",
+        speed: null,
+        altitude: null
+      })
+    }
+  } else {
+    myStore.commit('authentication/setPosition', {
+      trackgps: false,
+      latitude: "0",
+      longitude: "0",
+      speed: null,
+      altitude: null
+    })
+  }
+}
+
 export {
-  checkLocations
+  checkLocations,
+  savePostion
 }

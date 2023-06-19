@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex';
-import { AuthStateInterface } from './state';
+import { AuthStateInterface, UserLocationInterface } from './state';
 
 const mutation: MutationTree<AuthStateInterface> = {
   setUrl (state: AuthStateInterface, url: string) {
@@ -17,15 +17,9 @@ const mutation: MutationTree<AuthStateInterface> = {
   setUserid (state: AuthStateInterface, userid: string) {
     state.userId = userid
   },
-  setTrackGps (state: AuthStateInterface, trackgps: boolean) {
-    state.trackgps = trackgps
+  setPosition (state: AuthStateInterface, position: UserLocationInterface) {
+    state.position = position;
   },
-  setLatitude (state: AuthStateInterface, lat: string) {
-    state.latitude = lat
-  },
-  setLongitude (state: AuthStateInterface, lng: string) {
-    state.longitude = lng
-  }
 };
 
 export default mutation;
