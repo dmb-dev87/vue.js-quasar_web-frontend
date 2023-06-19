@@ -157,7 +157,7 @@ export default defineComponent({
       })
     }
 
-    let polling = null
+    let polling: any = null
 
     const saveLocation = () => {
       polling = setInterval(() => {
