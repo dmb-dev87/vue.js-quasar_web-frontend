@@ -169,8 +169,9 @@ export default defineComponent({
     const trackingGPS = () => {
       store.commit('authentication/setTrackGps', trackgps.value)
 
+      savePostion()
+
       if (trackgps.value) {
-        savePostion()
         if (polling == null) {
           saveLocation()
         }
