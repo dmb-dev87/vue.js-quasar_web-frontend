@@ -161,6 +161,7 @@ export default defineComponent({
 
     const saveLocation = () => {
       polling = setInterval(() => {
+        console.log("+++++++++++++++", trackgps.value)
         savePostion()
       }, 15000)
     }
@@ -170,9 +171,12 @@ export default defineComponent({
 
       if (trackgps.value) {
         savePostion()
-        saveLocation()
+        if (polling == null) {
+          saveLocation()
+        }
       } else {
         clearInterval(polling)
+        polling = null
       }
     }
 

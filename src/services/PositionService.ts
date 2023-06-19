@@ -17,58 +17,66 @@ const checkLocations = (date: any, time: any) => {
   return api.get(`/api/check-locations/?token=${token}&userId=${userId}&date=${date}&time=${time}`)
 }
 
-const savePostion = () => {
+const savePostion = async () => {
   const url = myStore.state.authentication.url
   const userId = myStore.state.authentication.userId
   const token = myStore.state.authentication.token
   const trackgps = myStore.state.authentication.trackgps
 
-  let result = false
+  const lat = myStore.state.authentication.position.latitude
+  const lng = myStore.state.authentication.position.longitude
 
   if (trackgps) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const api = axios.create({
-            baseURL: getBaseUrl(url),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
+        (position) => {
+          if (lat !== position.coords.latitude && lng !== position.coords.longitude) {
+            const api = axios.create({
+              baseURL: getBaseUrl(url),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
 
-          await api.post(
-            `/api/save-location/?userId=${userId}&token=${token}`,
-            {
+            api.post(
+              `/api/save-location/?userId=${userId}&token=${token}`,
+              {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                speed: position.coords.speed,
+                altitude: position.coords.altitude
+              }
+            )
+
+            myStore.commit('authentication/setPosition', {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
               speed: position.coords.speed,
-              altitude: position.coords.altitude
-            }
-          )
-
-          result = true
-          myStore.commit('authentication/setPosition', {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            speed: position.coords.speed,
-            altitude: position.coords.altitude,
-          })
+              altitude: position.coords.altitude,
+            })
+          }
         },
         (error) => {
-          result = false
+          myStore.commit('authentication/setPosition', {
+            latitude: 0,
+            longitude: 0,
+            speed: null,
+            altitude: null
+          })
         }
       )
     } else {
-      result = false
+      myStore.commit('authentication/setPosition', {
+        latitude: 0,
+        longitude: 0,
+        speed: null,
+        altitude: null
+      })
     }
   } else {
-    result = false
-  }
-
-  if (result == false) {
     myStore.commit('authentication/setPosition', {
-      latitude: "0",
-      longitude: "0",
+      latitude: 0,
+      longitude: 0,
       speed: null,
       altitude: null
     })

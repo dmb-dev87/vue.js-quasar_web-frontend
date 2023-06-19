@@ -1,8 +1,8 @@
 export interface UserLocationInterface {
-  latitude: string;
-  longitude: string;
-  speed: string;
-  altitude: string;
+  latitude: number;
+  longitude: number;
+  speed: any;
+  altitude: any;
 }
 
 export interface AuthStateInterface {
@@ -24,10 +24,10 @@ function state(): AuthStateInterface {
     loggedin: false,
     trackgps: false,
     position: {
-      latitude: "",
-      longitude: "",
-      speed: "",
-      altitude: "",
+      latitude: 0,
+      longitude: 0,
+      speed: null,
+      altitude: null,
     },
   };
 }
