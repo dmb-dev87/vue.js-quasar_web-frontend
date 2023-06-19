@@ -17,6 +17,9 @@ const mutation: MutationTree<AuthStateInterface> = {
   setUserid (state: AuthStateInterface, userid: string) {
     state.userId = userid
   },
+  setTrackGps (state: AuthStateInterface, trackgps: boolean) {
+    state.trackgps = trackgps
+  },
   setPosition (state: AuthStateInterface, position: UserLocationInterface) {
     state.position = position;
   },

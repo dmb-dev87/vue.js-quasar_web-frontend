@@ -1,5 +1,4 @@
 export interface UserLocationInterface {
-  trackgps: boolean;
   latitude: string;
   longitude: string;
   speed: string;
@@ -12,6 +11,7 @@ export interface AuthStateInterface {
   username: string;
   token: string;
   loggedin: boolean;
+  trackgps: boolean;
   position: UserLocationInterface;
 }
 
@@ -22,8 +22,8 @@ function state(): AuthStateInterface {
     username: "",
     token: "",
     loggedin: false,
+    trackgps: false,
     position: {
-      trackgps: false,
       latitude: "",
       longitude: "",
       speed: "",

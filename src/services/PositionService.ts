@@ -17,45 +17,37 @@ const checkLocations = (date: any, time: any) => {
   return api.get(`/api/check-locations/?token=${token}&userId=${userId}&date=${date}&time=${time}`)
 }
 
-const savePostion = (trackgps: boolean) => {
+const savePostion = () => {
   const url = myStore.state.authentication.url
   const userId = myStore.state.authentication.userId
   const token = myStore.state.authentication.token
+  const trackgps = myStore.state.authentication.trackgps
 
   let result = false
-
-  const saveCurrentLocation = (position: any): boolean => {
-    const api = axios.create({
-      baseURL: getBaseUrl(url),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-
-    api.post(
-      `/api/save-location/?userId=${userId}&token=${token}`,
-      {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        speed: position.coords.speed,
-        altitude: position.coords.altitude
-      }
-    ).then((res: any) => {
-      return res.data.status
-    }).catch(() => {
-      return false
-    })
-
-    return false
-  }
 
   if (trackgps) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          result = saveCurrentLocation(position)
+        async (position) => {
+          const api = axios.create({
+            baseURL: getBaseUrl(url),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+
+          await api.post(
+            `/api/save-location/?userId=${userId}&token=${token}`,
+            {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              speed: position.coords.speed,
+              altitude: position.coords.altitude
+            }
+          )
+
+          result = true
           myStore.commit('authentication/setPosition', {
-            trackgps: true,
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             speed: position.coords.speed,
@@ -68,28 +60,13 @@ const savePostion = (trackgps: boolean) => {
       )
     } else {
       result = false
-      myStore.commit('authentication/setPosition', {
-        trackgps: false,
-        latitude: "0",
-        longitude: "0",
-        speed: null,
-        altitude: null
-      })
     }
   } else {
     result = false
-    myStore.commit('authentication/setPosition', {
-      trackgps: false,
-      latitude: "0",
-      longitude: "0",
-      speed: null,
-      altitude: null
-    })
   }
 
   if (result == false) {
     myStore.commit('authentication/setPosition', {
-      trackgps: false,
       latitude: "0",
       longitude: "0",
       speed: null,

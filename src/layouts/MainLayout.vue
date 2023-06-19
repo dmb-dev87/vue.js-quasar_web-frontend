@@ -136,7 +136,7 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
     const loggedin = store.state.authentication.loggedin
-    const trackgps = ref(store.state.authentication.position.trackgps)
+    const trackgps = ref(store.state.authentication.trackgps)
 
     const Logout = () => {
       $q.dialog({
@@ -157,8 +157,23 @@ export default defineComponent({
       })
     }
 
+    let polling = null
+
+    const saveLocation = () => {
+      polling = setInterval(() => {
+        savePostion()
+      }, 15000)
+    }
+
     const trackingGPS = () => {
-      savePostion(trackgps.value)
+      store.commit('authentication/setTrackGps', trackgps.value)
+
+      if (trackgps.value) {
+        savePostion()
+        saveLocation()
+      } else {
+        clearInterval(polling)
+      }
     }
 
     return {
@@ -175,11 +190,14 @@ export default defineComponent({
       },
       Logout,
       trackgps,
-      trackingGPS
+      trackingGPS,
+      polling,
+      saveLocation
     }
   },
   data () {
     return {
+
       serviceLinks: [
         {
           title: '1',
@@ -204,5 +222,13 @@ export default defineComponent({
       ],
     }
   },
+  beforeDestroy() {
+      clearInterval(this.polling)
+  },
+  created () {
+    if (this.trackgps) {
+      this.saveLocation()
+    }
+  }
 });
 </script>

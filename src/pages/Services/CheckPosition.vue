@@ -64,8 +64,8 @@ export default defineComponent({
   mounted () {
     const store = useStore()
 
-    const lat = store.state.authentication.latitude
-    const lng = store.state.authentication.longitude
+    const lat = store.state.authentication.position.latitude
+    const lng = store.state.authentication.position.longitude
 
     this.mymap = L.map('currpositionmap').setView([lat, lng], 15)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(this.mymap)
