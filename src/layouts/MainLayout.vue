@@ -112,6 +112,9 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <NotificationBox />
+
   </q-layout>
 </template>
 
@@ -123,11 +126,14 @@ import { useStore } from 'src/store'
 import { useRouter } from 'vue-router'
 import { logout } from 'src/services/AuthService'
 import { savePostion } from 'src/services/PositionService'
+import { getMessaging, getToken } from 'firebase/messaging'
+import NotificationBox from 'src/components/NotificationBox.vue'
 
 export default defineComponent({
   name: 'MainLayout',
   components: {
-    SettingLanguage
+    SettingLanguage,
+    NotificationBox
   },
   setup () {
     const $q = useQuasar()
@@ -161,7 +167,6 @@ export default defineComponent({
 
     const saveLocation = () => {
       polling = setInterval(() => {
-        console.log("+++++++++++++++", trackgps.value)
         savePostion()
       }, 15000)
     }
@@ -233,6 +238,31 @@ export default defineComponent({
   created () {
     if (this.trackgps) {
       this.saveLocation()
+    }
+
+    if (this.$q.platform.is.desktop) {
+      this.webToken()
+    } else {
+      this.androidToken()
+    }
+  },
+  methods: {
+    webToken : async function () {
+      const messaging = getMessaging();
+      getToken(messaging, { vapidKey: 'BMsJrucpANKQskjiPIhPYXXT31Ea2N4iJPH5DUIPxd7e0sMh5QjEZJv8VSWAkzMkIw1v28Bu3pqpbgNAwUFoDAo'})
+        .then((curToken) => {
+          if (curToken) {
+            console.log(curToken)
+          } else {
+            console.log('No registration token available. Request permission to generate one.')
+          }
+        }).catch((err) => {
+          console.log('An error occurred while retrieving token. ', err)
+        })
+    },
+    androidToken: async function() {
+      var fcmToken = await FCM.getToken()
+      console.log(fcmToken)
     }
   }
 });

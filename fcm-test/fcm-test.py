@@ -1,0 +1,11 @@
+from pyfcm import FCMNotification
+
+push_service = FCMNotification(api_key="AAAAND-pE08:APA91bGCAqa6E8kpgrToRDMRKgtr-NUUmolF3cyWUyHSR8qZyGXbbXseXNPOP4pTFht3kucZWNywhDheIdv4I2TH149hzJAQAgRGGsh64cn1WfWkZVlsOchPl7Lv97BKCWkJ1BgxJ3rU")
+
+registration_id = "dQ-i2aUNoWmFVa-gmQMZDn:APA91bFxTNLiaviS5qRdO7ncJ7t0Zed38YPAQOXv3Gy9qiQ75rnjMh1y0b6B8BqvbucBK-TKgDV1pRPAkA1kLNRX4Y7C54DDJLK5YNPBAGg-QL_Pb_S6Fk0qtcpEDANoQHNzucuig_RC"
+
+message_title = "Test Notification"
+message_body = "Testing notification on Desktop."
+result = push_service.notify_single_device(registration_id=registration_id, message_title=message_title, message_body=message_body)
+
+print(result)

@@ -25,7 +25,8 @@ module.exports = configure(function (/* ctx */) {
     boot: [
       'i18n',
       'axios',
-      { path: 'persist-client', server: false }
+      { path: 'persist-client', server: false },
+      'firebase'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
