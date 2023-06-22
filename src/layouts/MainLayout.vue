@@ -252,17 +252,13 @@ export default defineComponent({
       getToken(messaging, { vapidKey: 'BMsJrucpANKQskjiPIhPYXXT31Ea2N4iJPH5DUIPxd7e0sMh5QjEZJv8VSWAkzMkIw1v28Bu3pqpbgNAwUFoDAo'})
         .then((curToken) => {
           if (curToken) {
-            console.log(curToken)
           } else {
-            console.log('No registration token available. Request permission to generate one.')
           }
         }).catch((err) => {
-          console.log('An error occurred while retrieving token. ', err)
         })
     },
     androidToken: async function() {
       var fcmToken = await FCM.getToken()
-      console.log(fcmToken)
     }
   }
 });

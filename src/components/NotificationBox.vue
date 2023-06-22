@@ -43,11 +43,9 @@ export default {
 
   methods: {
     receiveMessage() {
-      console.log("++++++++++++++++++++")
       try {
         onMessage(this.messaging, (payload) => {
           this.currentMessage = payload;
-          console.log("Message received. ", payload);
           this.setNotificationBoxForm(
               payload.notification.title,
               payload.notification.body
@@ -58,7 +56,6 @@ export default {
           }, 3000);
         })
       } catch (e) {
-        console.log(e);
       }
     },
 

@@ -24,7 +24,7 @@
           </div>
         </q-card-section>
         <q-card-actions class="justify-center" style="width: 100%; border-top: 1px solid #e0e0e0;">
-          <q-btn color="amber-10" flat :href="`#/seedraft/${service?.id}`">
+          <q-btn color="amber-10" flat @click="gotoMap">
             Start Navigate
           </q-btn>
         </q-card-actions>
@@ -97,6 +97,17 @@ export default defineComponent({
     return {
       service,
       loaded,
+    }
+  },
+  methods: {
+    gotoMap () {
+      let origin = this.service?.realstartplace.trim()
+      let dest = this.service?.realendplace.trim()
+
+      origin = origin?.split(' ').join('+')
+      dest = dest?.split(' ').join('+')
+
+      window.open(`https://www.google.com/maps/dir/?api=1&origin=${origin}&dest=${dest}`, '_blank')
     }
   }
 })
